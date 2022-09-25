@@ -1,6 +1,6 @@
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { getNetworkNameFromChainId, getDeployment, ContractDeployment } from '@ragetrade/sdk';
+import { getNetworkNameFromChainId } from '@ragetrade/sdk';
 import { ProxyAdmin__factory } from '../typechain-types';
 import { waitConfirmations } from './network-info';
 
@@ -32,4 +32,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ['ProxyAdmin'];
+func.tags = ['ProxyAdmin', 'TricryptoVault'];

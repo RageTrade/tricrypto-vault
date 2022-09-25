@@ -3,7 +3,7 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { getNetworkInfo } from '../network-info';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { RAGE_CLEARING_HOUSE_ADDRESS } = getNetworkInfo(hre.network.config.chainId);
+  const { RAGE_CLEARING_HOUSE_ADDRESS } = getNetworkInfo();
   if (RAGE_CLEARING_HOUSE_ADDRESS) {
     console.log('Skipping AccountLibrary.ts, using ClearingHouse from @ragetrade/core');
     return;

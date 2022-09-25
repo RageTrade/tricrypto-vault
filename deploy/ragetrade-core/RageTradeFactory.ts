@@ -22,7 +22,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     getNamedAccounts,
   } = hre;
 
-  const { RAGE_CLEARING_HOUSE_ADDRESS, RAGE_CLEARING_HOUSE_LENS_ADDRESS } = getNetworkInfo(hre.network.config.chainId);
+  const { RAGE_CLEARING_HOUSE_ADDRESS, RAGE_CLEARING_HOUSE_LENS_ADDRESS } = getNetworkInfo();
   if (RAGE_CLEARING_HOUSE_ADDRESS || RAGE_CLEARING_HOUSE_LENS_ADDRESS) {
     if (RAGE_CLEARING_HOUSE_ADDRESS) {
       await save('ClearingHouse', { abi: ClearingHouse__factory.abi, address: RAGE_CLEARING_HOUSE_ADDRESS });
@@ -75,7 +75,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await execute(
     'ClearingHouse',
-    { from: deployer },
+    { from: deployer, log: true },
     'updateProtocolSettings',
     {
       rangeLiquidationFeeFraction: 1500,

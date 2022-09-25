@@ -1,5 +1,7 @@
 import hre from 'hardhat';
 
+export const chainId = hre.network.config.chainId ?? 31337;
+
 export const skip = () => true;
 
 export interface NetworkInfo {
@@ -17,21 +19,21 @@ export interface NetworkInfo {
   RAGE_ETH_VTOKEN_ADDRESS?: string;
   RAGE_SWAP_SIMULATOR?: string;
 
-  CURVE_QUOTER: string;
-  CURVE_TOKEN_ADDRESS: string;
-  CURVE_GAUGE_ADDRESS: string;
-  CURVE_TRICRYPTO_POOL: string;
-  CURVE_TRICRYPTO_LP_TOKEN: string;
-  CURVE_NEW_GAUGE: string;
+  CURVE_QUOTER?: string;
+  CURVE_TOKEN_ADDRESS?: string;
+  CURVE_GAUGE_ADDRESS?: string;
+  CURVE_TRICRYPTO_POOL?: string;
+  CURVE_TRICRYPTO_LP_TOKEN?: string;
+  CURVE_NEW_GAUGE?: string;
 
   CURVE_USD_ORACLE: string;
   ETH_USD_ORACLE: string;
   BTC_USD_ORACLE: string;
   USDT_USD_ORACLE: string;
 
-  WETH_ADDRESS: string;
-  WBTC_ADDRESS: string;
-  USDT_ADDRESS: string;
+  WETH_ADDRESS?: string;
+  WBTC_ADDRESS?: string;
+  USDT_ADDRESS?: string;
 }
 
 export const UNISWAP_V3_FACTORY_ADDRESS = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
@@ -102,6 +104,38 @@ export const arbitrumTestnetInfo: () => NetworkInfo = () => ({
   WBTC_ADDRESS: '0xF2bf2a5CF00c9121A18d161F6738D39Ab576DB68',
 });
 
+export const arbitrumGoerliInfo: () => NetworkInfo = () => ({
+  KEEPER_ADDRESS: '0xe1829BaD81E9146E18f28E28691D930c052483bA',
+
+  DEPOSIT_CAP_C3CLT: 1_000_000_000,
+
+  UNISWAP_V3_FACTORY_ADDRESS: '0x4584E64B9cae7c86810a8a0A3c4469c4d164459f',
+  UNISWAP_V3_DEFAULT_FEE_TIER,
+  UNISWAP_V3_ROUTER_ADDRESS: '0xc05237c7c22bd0550fdab72858bc9fb517e3324e',
+
+  RAGE_CLEARING_HOUSE_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/ClearingHouse.json').address,
+  RAGE_CLEARING_HOUSE_LENS_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/ClearingHouseLens.json').address,
+  RAGE_SETTLEMENT_TOKEN_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/SettlementToken.json').address,
+  RAGE_ETH_VTOKEN_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/ETH-vToken.json').address,
+  RAGE_SWAP_SIMULATOR: require('@ragetrade/core/deployments/arbgoerli/SwapSimulator.json').address,
+
+  // CURVE_QUOTER: '0x07E837cAbcC37A8b185051Ae0E984346CECde049',
+  // CURVE_TOKEN_ADDRESS: '0xc6BeC13cBf941E3f9a0D3d21B68c5518475a3bAd',
+  // CURVE_GAUGE_ADDRESS: '0xcFe36c05f4001E01f0f549Faa3a2d248446D03D2',
+  // CURVE_TRICRYPTO_POOL: '0x07E837cAbcC37A8b185051Ae0E984346CECde049',
+  // CURVE_TRICRYPTO_LP_TOKEN: '0x931073e47baA30389A195CABcf5F3549157afdc9',
+  // CURVE_NEW_GAUGE: '0xcFe36c05f4001E01f0f549Faa3a2d248446D03D2',
+
+  CURVE_USD_ORACLE: '0x45A9f1ac95f6A68E3bbf66CABEE8AE4526f9B729',
+  ETH_USD_ORACLE: '0xef54dB43b6b7a28A26041577716b1aD5F78f699E',
+  BTC_USD_ORACLE: '0x21dcd8cb9481542A5e1d4710D329189eF1288fD5',
+  USDT_USD_ORACLE: '0x9a587Fd2b2Ef435a081469Bdca5802Cb4149e341',
+
+  WETH_ADDRESS: '0x007354C7DD2EB9f636204192092d7221c9d988F2',
+  USDT_ADDRESS: '0x37E607e9f601D718A50221f62b3f4816D0e6352e',
+  WBTC_ADDRESS: '0x577231039631e714d89a99828C9038D390dfe909',
+});
+
 // arbitrum mainnet fork
 export const hardhatNetworkInfo: () => NetworkInfo = () => ({
   KEEPER_ADDRESS: '0xe1829BaD81E9146E18f28E28691D930c052483bA',
@@ -136,17 +170,19 @@ export const hardhatNetworkInfo: () => NetworkInfo = () => ({
   USDT_ADDRESS: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
 });
 
-export function getNetworkInfo(chainId?: number): NetworkInfo {
+export function getNetworkInfo(): NetworkInfo {
   switch (chainId) {
     case 42161: // TODO add core contract addresses above
       return arbitrumInfo();
     case 421611:
       return arbitrumTestnetInfo();
+    case 421613:
+      return arbitrumGoerliInfo();
     case 31337:
       return hardhatNetworkInfo();
     default:
-      throw new Error(`Chain ID ${chainId} is recognized, please add addresses to deploy/network-info.ts`);
+      throw new Error(`Chain ID ${chainId} is not recognized, please add addresses to deploy/network-info.ts`);
   }
 }
 
-export const waitConfirmations = hre.network.config.chainId !== 31337 ? 2 : 0;
+export const waitConfirmations = hre.network.config.chainId !== 31337 ? 1 : 0;

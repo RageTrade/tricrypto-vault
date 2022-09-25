@@ -18,26 +18,26 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   // const { RAGE_SETTLEMENT_TOKEN_ADDRESS, UNISWAP_V3_ROUTER_ADDRESS, ETH_USD_ORACLE }
-  const networkInfo = getNetworkInfo(hre.network.config.chainId);
+  const networkInfo = getNetworkInfo();
 
   const initializeArgs: Parameters<VaultPeriphery['initialize']> = [
     networkInfo.RAGE_SETTLEMENT_TOKEN_ADDRESS ?? (await get('SettlementToken')).address,
-    networkInfo.USDT_ADDRESS,
-    networkInfo.WETH_ADDRESS,
-    networkInfo.CURVE_TRICRYPTO_LP_TOKEN,
+    (await get('USDT')).address,
+    (await get('WETH')).address,
+    (await get('CurveTriCryptoLpToken')).address,
     (await get('CurveYieldStrategy')).address,
     networkInfo.UNISWAP_V3_ROUTER_ADDRESS,
-    networkInfo.CURVE_QUOTER,
-    networkInfo.CURVE_TRICRYPTO_POOL,
+    (await get('CurveQuoter')).address,
+    (await get('CurveTriCryptoPool')).address,
     networkInfo.ETH_USD_ORACLE,
   ];
 
   if (logicDeployment.newlyDeployed) {
-    await execute('VaultPeriphery', { from: deployer, waitConfirmations }, 'initialize', ...initializeArgs);
+    await execute('VaultPeriphery', { from: deployer, waitConfirmations, log: true }, 'initialize', ...initializeArgs);
   }
 };
 
 export default func;
 
-func.tags = ['VaultPeriphery'];
+func.tags = ['VaultPeriphery', 'TricryptoVault'];
 func.dependencies = ['vETH', 'CurveYieldStrategy'];

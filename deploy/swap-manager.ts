@@ -20,4 +20,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ['SwapManagerLibrary'];
+func.tags = ['SwapManagerLibrary', 'TricryptoVault'];

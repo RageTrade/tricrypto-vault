@@ -31,5 +31,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ['CurveYieldStrategyLogic'];
+func.tags = ['CurveYieldStrategyLogic', 'TricryptoVault'];
 func.dependencies = ['LogicLibrary', 'SwapManagerLibrary', 'SwapSimulator'];

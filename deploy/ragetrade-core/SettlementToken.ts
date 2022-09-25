@@ -10,7 +10,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     getNamedAccounts,
   } = hre;
 
-  const { RAGE_SETTLEMENT_TOKEN_ADDRESS } = getNetworkInfo(hre.network.config.chainId);
+  const { RAGE_SETTLEMENT_TOKEN_ADDRESS } = getNetworkInfo();
   if (RAGE_SETTLEMENT_TOKEN_ADDRESS) {
     await save('SettlementToken', { abi: IERC20Metadata__factory.abi, address: RAGE_SETTLEMENT_TOKEN_ADDRESS });
     console.log('Skipping SettlementToken.ts deployment, using SettlementToken from @ragetrade/core');
@@ -25,7 +25,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
   });
 
-  await execute('SettlementToken', { from: deployer }, 'mint', deployer, hre.ethers.BigNumber.from(10).pow(8));
+  await execute(
+    'SettlementToken',
+    { from: deployer, log: true },
+    'mint',
+    deployer,
+    hre.ethers.BigNumber.from(10).pow(8),
+  );
 };
 
 export default func;

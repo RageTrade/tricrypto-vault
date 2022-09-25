@@ -16,7 +16,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const proxyAdminDeployment = await get('ProxyAdmin');
   const curveYieldStrategyLogicDeployment = await get('CurveYieldStrategyLogic');
 
-  const networkInfo = getNetworkInfo(hre.network.config.chainId ?? 31337);
+  const networkInfo = getNetworkInfo();
 
   const clearingHouseAddress: string = (await get('ClearingHouse')).address;
   const settlementTokenAddress: string = (await get('SettlementToken')).address;
@@ -33,7 +33,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     eightyTwentyRangeStrategyVaultInitParams: {
       baseVaultInitParams: {
         rageErc4626InitParams: {
-          asset: networkInfo.CURVE_TRICRYPTO_LP_TOKEN,
+          asset: (await get('CurveTriCryptoLpToken')).address,
           name: '80-20 TriCrypto Strategy',
           symbol: 'TCS',
         },
@@ -49,13 +49,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       minNotionalPositionToCloseThreshold: 100e6,
     },
     usdc: settlementTokenAddress,
-    usdt: networkInfo.USDT_ADDRESS,
-    weth: networkInfo.WETH_ADDRESS,
-    crvToken: networkInfo.CURVE_TOKEN_ADDRESS,
-    gauge: networkInfo.CURVE_NEW_GAUGE,
+    usdt: (await get('USDT')).address,
+    weth: (await get('WETH')).address,
+    crvToken: (await get('CurveToken')).address,
+    gauge: (await get('CurveGauge')).address,
     uniV3Router: networkInfo.UNISWAP_V3_ROUTER_ADDRESS,
-    lpPriceHolder: networkInfo.CURVE_QUOTER,
-    tricryptoPool: networkInfo.CURVE_TRICRYPTO_POOL,
+    lpPriceHolder: (await get('CurveQuoter')).address,
+    tricryptoPool: (await get('CurveTriCryptoPool')).address,
   };
 
   const ProxyDeployment = await deploy('CurveYieldStrategy', {
@@ -75,13 +75,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (ProxyDeployment.newlyDeployed) {
     await execute(
       'CurveYieldStrategy',
-      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations },
+      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations, log: true },
       'grantAllowances',
     );
 
     await execute(
       'CurveYieldStrategy',
-      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations },
+      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations, log: true },
       'updateBaseParams',
       parseUnits(networkInfo.DEPOSIT_CAP_C3CLT.toString(), 18),
       networkInfo.KEEPER_ADDRESS,
@@ -91,20 +91,22 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
     await execute(
       'CurveYieldStrategy',
-      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations },
+      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations, log: true },
       'updateCurveParams',
       1000, // feeBps
       100, // stablecoinSlippage
       parseUnits('2', 18), // crvHarvestThreshold
       500, // crvSlippageTolerance
-      networkInfo.CURVE_NEW_GAUGE,
+      (
+        await get('CurveGauge')
+      ).address,
       networkInfo.CURVE_USD_ORACLE,
     );
 
     const MINTER_ROLE = await read('CollateralToken', 'MINTER_ROLE');
     await execute(
       'CollateralToken',
-      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations },
+      { from: deployer, estimateGasExtra: 1_000_000, waitConfirmations, log: true },
       'grantRole',
       MINTER_ROLE,
       ProxyDeployment.address,
@@ -114,5 +116,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ['CurveYieldStrategy'];
-func.dependencies = ['CurveYieldStrategyLogic', 'CollateralToken', 'ProxyAdmin', 'vETH', 'SwapSimulator'];
+func.tags = ['CurveYieldStrategy', 'TricryptoVault'];
+func.dependencies = ['CurveMocks', 'CurveYieldStrategyLogic', 'CollateralToken', 'ProxyAdmin', 'vETH', 'SwapSimulator'];

@@ -25,5 +25,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = ['LogicLibrary'];
+func.tags = ['LogicLibrary', 'TricryptoVault'];
 func.dependencies = ['SwapManagerLibrary'];
