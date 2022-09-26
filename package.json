@@ -1,6 +1,6 @@
 {
   "name": "@ragetrade/tricrypto-vault",
-  "version": "1.0.0-arbgoerli.1",
+  "version": "1.0.0-arbgoerli.2",
   "repository": "https://github.com/ragetrade/tricrypto-vault.git",
   "license": "MIT",
   "scripts": {
