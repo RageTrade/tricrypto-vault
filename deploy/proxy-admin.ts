@@ -18,9 +18,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const coreDeploymentProxyAdminAddress =
       require(`@ragetrade/core/deployments/${networkName}/ProxyAdmin.json`).address;
     await save('ProxyAdmin', { abi: ProxyAdmin__factory.abi, address: coreDeploymentProxyAdminAddress });
-  } catch {
+    console.log('Save ProxyAdmin', coreDeploymentProxyAdminAddress);
+  } catch (e: any) {
     // if doesn't contain a proxy admin then deploy a new one
-    console.log('No core deployment found');
+    console.log('No core deployment found:', e.message);
     await deploy('ProxyAdmin', {
       contract: 'ProxyAdmin',
       from: deployer,
