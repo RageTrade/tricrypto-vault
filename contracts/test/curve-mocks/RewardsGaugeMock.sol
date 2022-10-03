@@ -58,7 +58,11 @@ contract RewardsGaugeMock {
         IERC20(lpToken).transfer(msg.sender, _value);
     }
 
-    function claim_rewards(address addr) external {
+    function claim_rewards() external {
+        claim_rewards(msg.sender);
+    }
+
+    function claim_rewards(address addr) public {
         uint256 oldCheckpoint = lastCheckpoint[msg.sender];
         lastCheckpoint[msg.sender] = block.number;
 
