@@ -35,6 +35,8 @@ abstract contract EightyTwentyRangeStrategyVault is BaseVault {
     uint64 public minNotionalPositionToCloseThreshold;
     uint64 private constant SQRT_PRICE_FACTOR_PIPS = 800000; // scaled by 1e6
 
+    constructor(address _swapSimulator) BaseVault(_swapSimulator) {}
+
     struct EightyTwentyRangeStrategyVaultInitParams {
         BaseVaultInitParams baseVaultInitParams;
         uint16 closePositionSlippageSqrtToleranceBps;
