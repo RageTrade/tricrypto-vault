@@ -1,0 +1,524 @@
+{
+  "storage": [
+    {
+      "astId": 217,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_initialized",
+      "offset": 0,
+      "slot": "0",
+      "type": "t_uint8"
+    },
+    {
+      "astId": 220,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_initializing",
+      "offset": 1,
+      "slot": "0",
+      "type": "t_bool"
+    },
+    {
+      "astId": 1461,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "__gap",
+      "offset": 0,
+      "slot": "1",
+      "type": "t_array(t_uint256)50_storage"
+    },
+    {
+      "astId": 482,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_balances",
+      "offset": 0,
+      "slot": "51",
+      "type": "t_mapping(t_address,t_uint256)"
+    },
+    {
+      "astId": 488,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_allowances",
+      "offset": 0,
+      "slot": "52",
+      "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))"
+    },
+    {
+      "astId": 490,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_totalSupply",
+      "offset": 0,
+      "slot": "53",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 492,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_name",
+      "offset": 0,
+      "slot": "54",
+      "type": "t_string_storage"
+    },
+    {
+      "astId": 494,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_symbol",
+      "offset": 0,
+      "slot": "55",
+      "type": "t_string_storage"
+    },
+    {
+      "astId": 1073,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "__gap",
+      "offset": 0,
+      "slot": "56",
+      "type": "t_array(t_uint256)45_storage"
+    },
+    {
+      "astId": 35004,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "asset",
+      "offset": 0,
+      "slot": "101",
+      "type": "t_contract(IERC20Metadata)3718"
+    },
+    {
+      "astId": 97,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "_owner",
+      "offset": 0,
+      "slot": "102",
+      "type": "t_address"
+    },
+    {
+      "astId": 209,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "__gap",
+      "offset": 0,
+      "slot": "103",
+      "type": "t_array(t_uint256)49_storage"
+    },
+    {
+      "astId": 29283,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "lens",
+      "offset": 0,
+      "slot": "152",
+      "type": "t_contract(ClearingHouseLens)8546"
+    },
+    {
+      "astId": 29286,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "swapSimulator",
+      "offset": 0,
+      "slot": "153",
+      "type": "t_contract(ISwapSimulator)30845"
+    },
+    {
+      "astId": 29289,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rageClearingHouse",
+      "offset": 0,
+      "slot": "154",
+      "type": "t_contract(IClearingHouse)7317"
+    },
+    {
+      "astId": 29292,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rageSettlementToken",
+      "offset": 0,
+      "slot": "155",
+      "type": "t_contract(IERC20Metadata)3718"
+    },
+    {
+      "astId": 29295,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rageCollateralToken",
+      "offset": 0,
+      "slot": "156",
+      "type": "t_contract(ERC20PresetMinterPauser)3854"
+    },
+    {
+      "astId": 29297,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "ethPoolId",
+      "offset": 20,
+      "slot": "156",
+      "type": "t_uint32"
+    },
+    {
+      "astId": 29299,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rageAccountNo",
+      "offset": 0,
+      "slot": "157",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 29301,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "collateralId",
+      "offset": 0,
+      "slot": "158",
+      "type": "t_uint32"
+    },
+    {
+      "astId": 29304,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rageVPool",
+      "offset": 4,
+      "slot": "158",
+      "type": "t_contract(IUniswapV3Pool)25808"
+    },
+    {
+      "astId": 29306,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "depositCap",
+      "offset": 0,
+      "slot": "159",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 29308,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "lastRebalanceTS",
+      "offset": 0,
+      "slot": "160",
+      "type": "t_uint64"
+    },
+    {
+      "astId": 29310,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rebalancePriceThresholdBps",
+      "offset": 8,
+      "slot": "160",
+      "type": "t_uint16"
+    },
+    {
+      "astId": 29312,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "rebalanceTimeThreshold",
+      "offset": 10,
+      "slot": "160",
+      "type": "t_uint32"
+    },
+    {
+      "astId": 29314,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "keeper",
+      "offset": 0,
+      "slot": "161",
+      "type": "t_address"
+    },
+    {
+      "astId": 32416,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "baseTickLower",
+      "offset": 20,
+      "slot": "161",
+      "type": "t_int24"
+    },
+    {
+      "astId": 32418,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "baseTickUpper",
+      "offset": 23,
+      "slot": "161",
+      "type": "t_int24"
+    },
+    {
+      "astId": 32420,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "baseLiquidity",
+      "offset": 0,
+      "slot": "162",
+      "type": "t_uint128"
+    },
+    {
+      "astId": 32422,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "isReset",
+      "offset": 16,
+      "slot": "162",
+      "type": "t_bool"
+    },
+    {
+      "astId": 32424,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "closePositionSlippageSqrtToleranceBps",
+      "offset": 17,
+      "slot": "162",
+      "type": "t_uint16"
+    },
+    {
+      "astId": 32426,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "resetPositionThresholdBps",
+      "offset": 19,
+      "slot": "162",
+      "type": "t_uint16"
+    },
+    {
+      "astId": 32428,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "minNotionalPositionToCloseThreshold",
+      "offset": 21,
+      "slot": "162",
+      "type": "t_uint64"
+    },
+    {
+      "astId": 35526,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "usdt",
+      "offset": 0,
+      "slot": "163",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 35529,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "weth",
+      "offset": 0,
+      "slot": "164",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 35532,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "usdc",
+      "offset": 0,
+      "slot": "165",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 35535,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "crvToken",
+      "offset": 0,
+      "slot": "166",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 35538,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "gauge",
+      "offset": 0,
+      "slot": "167",
+      "type": "t_contract(ICurveGauge)30941"
+    },
+    {
+      "astId": 35541,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "uniV3Router",
+      "offset": 0,
+      "slot": "168",
+      "type": "t_contract(ISwapRouter)29213"
+    },
+    {
+      "astId": 35544,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "lpPriceHolder",
+      "offset": 0,
+      "slot": "169",
+      "type": "t_contract(ILPPriceGetter)31061"
+    },
+    {
+      "astId": 35547,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "triCryptoPool",
+      "offset": 0,
+      "slot": "170",
+      "type": "t_contract(ICurveStableSwap)31038"
+    },
+    {
+      "astId": 35550,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "crvOracle",
+      "offset": 0,
+      "slot": "171",
+      "type": "t_contract(AggregatorV3Interface)45"
+    },
+    {
+      "astId": 35552,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "crvPendingToSwap",
+      "offset": 0,
+      "slot": "172",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 35554,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "crvHarvestThreshold",
+      "offset": 0,
+      "slot": "173",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 35556,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "crvSwapSlippageTolerance",
+      "offset": 0,
+      "slot": "174",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 35558,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "stablecoinSlippageTolerance",
+      "offset": 0,
+      "slot": "175",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 35564,
+      "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
+      "label": "FEE",
+      "offset": 0,
+      "slot": "176",
+      "type": "t_uint256"
+    }
+  ],
+  "types": {
+    "t_address": {
+      "encoding": "inplace",
+      "label": "address",
+      "numberOfBytes": "20"
+    },
+    "t_array(t_uint256)45_storage": {
+      "base": "t_uint256",
+      "encoding": "inplace",
+      "label": "uint256[45]",
+      "numberOfBytes": "1440"
+    },
+    "t_array(t_uint256)49_storage": {
+      "base": "t_uint256",
+      "encoding": "inplace",
+      "label": "uint256[49]",
+      "numberOfBytes": "1568"
+    },
+    "t_array(t_uint256)50_storage": {
+      "base": "t_uint256",
+      "encoding": "inplace",
+      "label": "uint256[50]",
+      "numberOfBytes": "1600"
+    },
+    "t_bool": {
+      "encoding": "inplace",
+      "label": "bool",
+      "numberOfBytes": "1"
+    },
+    "t_contract(AggregatorV3Interface)45": {
+      "encoding": "inplace",
+      "label": "contract AggregatorV3Interface",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ClearingHouseLens)8546": {
+      "encoding": "inplace",
+      "label": "contract ClearingHouseLens",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ERC20PresetMinterPauser)3854": {
+      "encoding": "inplace",
+      "label": "contract ERC20PresetMinterPauser",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IClearingHouse)7317": {
+      "encoding": "inplace",
+      "label": "contract IClearingHouse",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ICurveGauge)30941": {
+      "encoding": "inplace",
+      "label": "contract ICurveGauge",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ICurveStableSwap)31038": {
+      "encoding": "inplace",
+      "label": "contract ICurveStableSwap",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IERC20)3612": {
+      "encoding": "inplace",
+      "label": "contract IERC20",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IERC20Metadata)3718": {
+      "encoding": "inplace",
+      "label": "contract IERC20Metadata",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ILPPriceGetter)31061": {
+      "encoding": "inplace",
+      "label": "contract ILPPriceGetter",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ISwapRouter)29213": {
+      "encoding": "inplace",
+      "label": "contract ISwapRouter",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ISwapSimulator)30845": {
+      "encoding": "inplace",
+      "label": "contract ISwapSimulator",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IUniswapV3Pool)25808": {
+      "encoding": "inplace",
+      "label": "contract IUniswapV3Pool",
+      "numberOfBytes": "20"
+    },
+    "t_int24": {
+      "encoding": "inplace",
+      "label": "int24",
+      "numberOfBytes": "3"
+    },
+    "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+      "encoding": "mapping",
+      "key": "t_address",
+      "label": "mapping(address => mapping(address => uint256))",
+      "numberOfBytes": "32",
+      "value": "t_mapping(t_address,t_uint256)"
+    },
+    "t_mapping(t_address,t_uint256)": {
+      "encoding": "mapping",
+      "key": "t_address",
+      "label": "mapping(address => uint256)",
+      "numberOfBytes": "32",
+      "value": "t_uint256"
+    },
+    "t_string_storage": {
+      "encoding": "bytes",
+      "label": "string",
+      "numberOfBytes": "32"
+    },
+    "t_uint128": {
+      "encoding": "inplace",
+      "label": "uint128",
+      "numberOfBytes": "16"
+    },
+    "t_uint16": {
+      "encoding": "inplace",
+      "label": "uint16",
+      "numberOfBytes": "2"
+    },
+    "t_uint256": {
+      "encoding": "inplace",
+      "label": "uint256",
+      "numberOfBytes": "32"
+    },
+    "t_uint32": {
+      "encoding": "inplace",
+      "label": "uint32",
+      "numberOfBytes": "4"
+    },
+    "t_uint64": {
+      "encoding": "inplace",
+      "label": "uint64",
+      "numberOfBytes": "8"
+    },
+    "t_uint8": {
+      "encoding": "inplace",
+      "label": "uint8",
+      "numberOfBytes": "1"
+    }
+  }
+}

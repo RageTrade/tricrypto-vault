@@ -5248,6 +5248,11 @@ hardhat-gas-reporter@^1.0.4:
     eth-gas-reporter "^0.2.24"
     sha1 "^1.1.1"
 
+hardhat-storage-layout-changes@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/hardhat-storage-layout-changes/-/hardhat-storage-layout-changes-0.1.0.tgz#ea7650f3ec7cf80159cde1c56b94c232ef7dc9b5"
+  integrity sha512-bzuwO4qpp/hUwOBm3XZg6yQ5rVGq6NixdT5nVSRf+IPwECAfGZe3561aCMxxm5cLJoUlHiRZF/oVraCjjivJQw==
+
 hardhat-tracer@^1.1.0-rc.5:
   version "1.1.0-rc.6"
   resolved "https://registry.yarnpkg.com/hardhat-tracer/-/hardhat-tracer-1.1.0-rc.6.tgz#963f9058a2e1ca7f1dac19d8b00ab2c2e556a1f4"

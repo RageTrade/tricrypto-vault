@@ -1,0 +1,201 @@
+{
+  "storage": [
+    {
+      "astId": 217,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "_initialized",
+      "offset": 0,
+      "slot": "0",
+      "type": "t_uint8"
+    },
+    {
+      "astId": 220,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "_initializing",
+      "offset": 1,
+      "slot": "0",
+      "type": "t_bool"
+    },
+    {
+      "astId": 1461,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "__gap",
+      "offset": 0,
+      "slot": "1",
+      "type": "t_array(t_uint256)50_storage"
+    },
+    {
+      "astId": 97,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "_owner",
+      "offset": 0,
+      "slot": "51",
+      "type": "t_address"
+    },
+    {
+      "astId": 209,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "__gap",
+      "offset": 0,
+      "slot": "52",
+      "type": "t_array(t_uint256)49_storage"
+    },
+    {
+      "astId": 36314,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "usdc",
+      "offset": 0,
+      "slot": "101",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 36317,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "usdt",
+      "offset": 0,
+      "slot": "102",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 36320,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "weth",
+      "offset": 0,
+      "slot": "103",
+      "type": "t_contract(IWETH9)30860"
+    },
+    {
+      "astId": 36323,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "lpToken",
+      "offset": 0,
+      "slot": "104",
+      "type": "t_contract(IERC20)3612"
+    },
+    {
+      "astId": 36326,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "vault",
+      "offset": 0,
+      "slot": "105",
+      "type": "t_contract(IERC4626)30821"
+    },
+    {
+      "astId": 36329,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "swapRouter",
+      "offset": 0,
+      "slot": "106",
+      "type": "t_contract(ISwapRouter)29213"
+    },
+    {
+      "astId": 36332,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "lpOracle",
+      "offset": 0,
+      "slot": "107",
+      "type": "t_contract(ILPPriceGetter)31061"
+    },
+    {
+      "astId": 36335,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "stableSwap",
+      "offset": 0,
+      "slot": "108",
+      "type": "t_contract(ICurveStableSwap)31038"
+    },
+    {
+      "astId": 36338,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "ethOracle",
+      "offset": 0,
+      "slot": "109",
+      "type": "t_contract(AggregatorV3Interface)45"
+    },
+    {
+      "astId": 36342,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "MAX_TOLERANCE",
+      "offset": 0,
+      "slot": "110",
+      "type": "t_uint256"
+    },
+    {
+      "astId": 36345,
+      "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
+      "label": "MAX_BPS",
+      "offset": 0,
+      "slot": "111",
+      "type": "t_uint256"
+    }
+  ],
+  "types": {
+    "t_address": {
+      "encoding": "inplace",
+      "label": "address",
+      "numberOfBytes": "20"
+    },
+    "t_array(t_uint256)49_storage": {
+      "base": "t_uint256",
+      "encoding": "inplace",
+      "label": "uint256[49]",
+      "numberOfBytes": "1568"
+    },
+    "t_array(t_uint256)50_storage": {
+      "base": "t_uint256",
+      "encoding": "inplace",
+      "label": "uint256[50]",
+      "numberOfBytes": "1600"
+    },
+    "t_bool": {
+      "encoding": "inplace",
+      "label": "bool",
+      "numberOfBytes": "1"
+    },
+    "t_contract(AggregatorV3Interface)45": {
+      "encoding": "inplace",
+      "label": "contract AggregatorV3Interface",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ICurveStableSwap)31038": {
+      "encoding": "inplace",
+      "label": "contract ICurveStableSwap",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IERC20)3612": {
+      "encoding": "inplace",
+      "label": "contract IERC20",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IERC4626)30821": {
+      "encoding": "inplace",
+      "label": "contract IERC4626",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ILPPriceGetter)31061": {
+      "encoding": "inplace",
+      "label": "contract ILPPriceGetter",
+      "numberOfBytes": "20"
+    },
+    "t_contract(ISwapRouter)29213": {
+      "encoding": "inplace",
+      "label": "contract ISwapRouter",
+      "numberOfBytes": "20"
+    },
+    "t_contract(IWETH9)30860": {
+      "encoding": "inplace",
+      "label": "contract IWETH9",
+      "numberOfBytes": "20"
+    },
+    "t_uint256": {
+      "encoding": "inplace",
+      "label": "uint256",
+      "numberOfBytes": "32"
+    },
+    "t_uint8": {
+      "encoding": "inplace",
+      "label": "uint8",
+      "numberOfBytes": "1"
+    }
+  }
+}
