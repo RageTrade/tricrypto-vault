@@ -117,7 +117,7 @@ export const arbitrumGoerliInfo: () => NetworkInfo = () => ({
   RAGE_CLEARING_HOUSE_LENS_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/ClearingHouseLens.json').address,
   RAGE_SETTLEMENT_TOKEN_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/SettlementToken.json').address,
   RAGE_ETH_VTOKEN_ADDRESS: require('@ragetrade/core/deployments/arbgoerli/ETH-vToken.json').address,
-  RAGE_SWAP_SIMULATOR: require('@ragetrade/core/deployments/arbgoerli/SwapSimulator.json').address,
+  RAGE_SWAP_SIMULATOR: '0xB51867450F4E0CC3D9Ba5430bD0D7eA4C404d880',
 
   // CURVE_QUOTER: '0x07E837cAbcC37A8b185051Ae0E984346CECde049',
   // CURVE_TOKEN_ADDRESS: '0xc6BeC13cBf941E3f9a0D3d21B68c5518475a3bAd',
