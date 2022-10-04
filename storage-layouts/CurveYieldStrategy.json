@@ -73,7 +73,7 @@
       "type": "t_array(t_uint256)45_storage"
     },
     {
-      "astId": 35004,
+      "astId": 35045,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "asset",
       "offset": 0,
@@ -107,13 +107,13 @@
     {
       "astId": 29286,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
-      "label": "swapSimulator",
+      "label": "swapSimulator__unused",
       "offset": 0,
       "slot": "153",
-      "type": "t_contract(ISwapSimulator)30845"
+      "type": "t_contract(ISwapSimulator)30860"
     },
     {
-      "astId": 29289,
+      "astId": 29292,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rageClearingHouse",
       "offset": 0,
@@ -121,7 +121,7 @@
       "type": "t_contract(IClearingHouse)7317"
     },
     {
-      "astId": 29292,
+      "astId": 29295,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rageSettlementToken",
       "offset": 0,
@@ -129,7 +129,7 @@
       "type": "t_contract(IERC20Metadata)3718"
     },
     {
-      "astId": 29295,
+      "astId": 29298,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rageCollateralToken",
       "offset": 0,
@@ -137,7 +137,7 @@
       "type": "t_contract(ERC20PresetMinterPauser)3854"
     },
     {
-      "astId": 29297,
+      "astId": 29300,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "ethPoolId",
       "offset": 20,
@@ -145,7 +145,7 @@
       "type": "t_uint32"
     },
     {
-      "astId": 29299,
+      "astId": 29302,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rageAccountNo",
       "offset": 0,
@@ -153,7 +153,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 29301,
+      "astId": 29304,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "collateralId",
       "offset": 0,
@@ -161,7 +161,7 @@
       "type": "t_uint32"
     },
     {
-      "astId": 29304,
+      "astId": 29307,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rageVPool",
       "offset": 4,
@@ -169,7 +169,7 @@
       "type": "t_contract(IUniswapV3Pool)25808"
     },
     {
-      "astId": 29306,
+      "astId": 29309,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "depositCap",
       "offset": 0,
@@ -177,7 +177,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 29308,
+      "astId": 29311,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "lastRebalanceTS",
       "offset": 0,
@@ -185,7 +185,7 @@
       "type": "t_uint64"
     },
     {
-      "astId": 29310,
+      "astId": 29313,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rebalancePriceThresholdBps",
       "offset": 8,
@@ -193,7 +193,7 @@
       "type": "t_uint16"
     },
     {
-      "astId": 29312,
+      "astId": 29315,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "rebalanceTimeThreshold",
       "offset": 10,
@@ -201,7 +201,7 @@
       "type": "t_uint32"
     },
     {
-      "astId": 29314,
+      "astId": 29317,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "keeper",
       "offset": 0,
@@ -209,7 +209,7 @@
       "type": "t_address"
     },
     {
-      "astId": 32416,
+      "astId": 32431,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "baseTickLower",
       "offset": 20,
@@ -217,7 +217,7 @@
       "type": "t_int24"
     },
     {
-      "astId": 32418,
+      "astId": 32433,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "baseTickUpper",
       "offset": 23,
@@ -225,7 +225,7 @@
       "type": "t_int24"
     },
     {
-      "astId": 32420,
+      "astId": 32435,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "baseLiquidity",
       "offset": 0,
@@ -233,7 +233,7 @@
       "type": "t_uint128"
     },
     {
-      "astId": 32422,
+      "astId": 32437,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "isReset",
       "offset": 16,
@@ -241,7 +241,7 @@
       "type": "t_bool"
     },
     {
-      "astId": 32424,
+      "astId": 32439,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "closePositionSlippageSqrtToleranceBps",
       "offset": 17,
@@ -249,7 +249,7 @@
       "type": "t_uint16"
     },
     {
-      "astId": 32426,
+      "astId": 32441,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "resetPositionThresholdBps",
       "offset": 19,
@@ -257,7 +257,7 @@
       "type": "t_uint16"
     },
     {
-      "astId": 32428,
+      "astId": 32443,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "minNotionalPositionToCloseThreshold",
       "offset": 21,
@@ -265,7 +265,7 @@
       "type": "t_uint64"
     },
     {
-      "astId": 35526,
+      "astId": 35567,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "usdt",
       "offset": 0,
@@ -273,7 +273,7 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 35529,
+      "astId": 35570,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "weth",
       "offset": 0,
@@ -281,7 +281,7 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 35532,
+      "astId": 35573,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "usdc",
       "offset": 0,
@@ -289,7 +289,7 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 35535,
+      "astId": 35576,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "crvToken",
       "offset": 0,
@@ -297,15 +297,15 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 35538,
+      "astId": 35579,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "gauge",
       "offset": 0,
       "slot": "167",
-      "type": "t_contract(ICurveGauge)30941"
+      "type": "t_contract(ICurveGauge)30956"
     },
     {
-      "astId": 35541,
+      "astId": 35582,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "uniV3Router",
       "offset": 0,
@@ -313,23 +313,23 @@
       "type": "t_contract(ISwapRouter)29213"
     },
     {
-      "astId": 35544,
+      "astId": 35585,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "lpPriceHolder",
       "offset": 0,
       "slot": "169",
-      "type": "t_contract(ILPPriceGetter)31061"
+      "type": "t_contract(ILPPriceGetter)31076"
     },
     {
-      "astId": 35547,
+      "astId": 35588,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "triCryptoPool",
       "offset": 0,
       "slot": "170",
-      "type": "t_contract(ICurveStableSwap)31038"
+      "type": "t_contract(ICurveStableSwap)31053"
     },
     {
-      "astId": 35550,
+      "astId": 35591,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "crvOracle",
       "offset": 0,
@@ -337,7 +337,7 @@
       "type": "t_contract(AggregatorV3Interface)45"
     },
     {
-      "astId": 35552,
+      "astId": 35593,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "crvPendingToSwap",
       "offset": 0,
@@ -345,7 +345,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 35554,
+      "astId": 35595,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "crvHarvestThreshold",
       "offset": 0,
@@ -353,7 +353,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 35556,
+      "astId": 35597,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "crvSwapSlippageTolerance",
       "offset": 0,
@@ -361,7 +361,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 35558,
+      "astId": 35599,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "stablecoinSlippageTolerance",
       "offset": 0,
@@ -369,7 +369,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 35564,
+      "astId": 35605,
       "contract": "contracts/yieldStrategy/CurveYieldStrategy.sol:CurveYieldStrategy",
       "label": "FEE",
       "offset": 0,
@@ -426,12 +426,12 @@
       "label": "contract IClearingHouse",
       "numberOfBytes": "20"
     },
-    "t_contract(ICurveGauge)30941": {
+    "t_contract(ICurveGauge)30956": {
       "encoding": "inplace",
       "label": "contract ICurveGauge",
       "numberOfBytes": "20"
     },
-    "t_contract(ICurveStableSwap)31038": {
+    "t_contract(ICurveStableSwap)31053": {
       "encoding": "inplace",
       "label": "contract ICurveStableSwap",
       "numberOfBytes": "20"
@@ -446,7 +446,7 @@
       "label": "contract IERC20Metadata",
       "numberOfBytes": "20"
     },
-    "t_contract(ILPPriceGetter)31061": {
+    "t_contract(ILPPriceGetter)31076": {
       "encoding": "inplace",
       "label": "contract ILPPriceGetter",
       "numberOfBytes": "20"
@@ -456,7 +456,7 @@
       "label": "contract ISwapRouter",
       "numberOfBytes": "20"
     },
-    "t_contract(ISwapSimulator)30845": {
+    "t_contract(ISwapSimulator)30860": {
       "encoding": "inplace",
       "label": "contract ISwapSimulator",
       "numberOfBytes": "20"

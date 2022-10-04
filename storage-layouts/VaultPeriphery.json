@@ -41,7 +41,7 @@
       "type": "t_array(t_uint256)49_storage"
     },
     {
-      "astId": 36314,
+      "astId": 36364,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "usdc",
       "offset": 0,
@@ -49,7 +49,7 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 36317,
+      "astId": 36367,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "usdt",
       "offset": 0,
@@ -57,15 +57,15 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 36320,
+      "astId": 36370,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "weth",
       "offset": 0,
       "slot": "103",
-      "type": "t_contract(IWETH9)30860"
+      "type": "t_contract(IWETH9)30875"
     },
     {
-      "astId": 36323,
+      "astId": 36373,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "lpToken",
       "offset": 0,
@@ -73,15 +73,15 @@
       "type": "t_contract(IERC20)3612"
     },
     {
-      "astId": 36326,
+      "astId": 36376,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "vault",
       "offset": 0,
       "slot": "105",
-      "type": "t_contract(IERC4626)30821"
+      "type": "t_contract(IERC4626)30836"
     },
     {
-      "astId": 36329,
+      "astId": 36379,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "swapRouter",
       "offset": 0,
@@ -89,23 +89,23 @@
       "type": "t_contract(ISwapRouter)29213"
     },
     {
-      "astId": 36332,
+      "astId": 36382,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "lpOracle",
       "offset": 0,
       "slot": "107",
-      "type": "t_contract(ILPPriceGetter)31061"
+      "type": "t_contract(ILPPriceGetter)31076"
     },
     {
-      "astId": 36335,
+      "astId": 36385,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "stableSwap",
       "offset": 0,
       "slot": "108",
-      "type": "t_contract(ICurveStableSwap)31038"
+      "type": "t_contract(ICurveStableSwap)31053"
     },
     {
-      "astId": 36338,
+      "astId": 36388,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "ethOracle",
       "offset": 0,
@@ -113,7 +113,7 @@
       "type": "t_contract(AggregatorV3Interface)45"
     },
     {
-      "astId": 36342,
+      "astId": 36392,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "MAX_TOLERANCE",
       "offset": 0,
@@ -121,7 +121,7 @@
       "type": "t_uint256"
     },
     {
-      "astId": 36345,
+      "astId": 36395,
       "contract": "contracts/yieldStrategy/VaultPeriphery.sol:VaultPeriphery",
       "label": "MAX_BPS",
       "offset": 0,
@@ -157,7 +157,7 @@
       "label": "contract AggregatorV3Interface",
       "numberOfBytes": "20"
     },
-    "t_contract(ICurveStableSwap)31038": {
+    "t_contract(ICurveStableSwap)31053": {
       "encoding": "inplace",
       "label": "contract ICurveStableSwap",
       "numberOfBytes": "20"
@@ -167,12 +167,12 @@
       "label": "contract IERC20",
       "numberOfBytes": "20"
     },
-    "t_contract(IERC4626)30821": {
+    "t_contract(IERC4626)30836": {
       "encoding": "inplace",
       "label": "contract IERC4626",
       "numberOfBytes": "20"
     },
-    "t_contract(ILPPriceGetter)31061": {
+    "t_contract(ILPPriceGetter)31076": {
       "encoding": "inplace",
       "label": "contract ILPPriceGetter",
       "numberOfBytes": "20"
@@ -182,7 +182,7 @@
       "label": "contract ISwapRouter",
       "numberOfBytes": "20"
     },
-    "t_contract(IWETH9)30860": {
+    "t_contract(IWETH9)30875": {
       "encoding": "inplace",
       "label": "contract IWETH9",
       "numberOfBytes": "20"
