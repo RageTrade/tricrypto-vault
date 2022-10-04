@@ -170,7 +170,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     /// @notice claims the accumulated CRV rewards from the gauge, sells CRV rewards for LP tokens and stakes LP tokens
     function _harvestFees() internal override {
         uint256 before = crvToken.balanceOf(address(this));
-        GAUGE_FACTORY.mint(address(gauge));
+        // GAUGE_FACTORY.mint(address(gauge));
         gauge.claim_rewards();
         uint256 afterBal = crvToken.balanceOf(address(this));
 
