@@ -267,6 +267,7 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
     /// @notice converts all non-asset balances into asset
     /// @dev to be called before functions which allocate and deallocate shares (deposit, withdraw, mint and redeem)
     function _beforeShareAllocation() internal virtual override {
+        emit PriceInfo(getPriceX128());
         _rebalanceProfitAndCollateral();
     }
 
