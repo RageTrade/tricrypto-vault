@@ -1,16 +1,20 @@
 import { expect } from 'chai';
 import hre, { ethers } from 'hardhat';
-import addresses from '../test/fixtures/addresses';
-import { increaseBlockTimestamp } from '../test/utils/vault-helpers';
+import addresses from './fixtures/addresses';
+import { increaseBlockTimestamp } from './utils/vault-helpers';
 import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter } from '../typechain-types';
+import { activateMainnetFork } from './utils/mainnet-fork';
 
 describe('Update Implementation', () => {
-  it('tests updating implementation', async () => {
-    const {
-      deployments: { deploy },
-    } = hre;
+  before(async () => {
+    await activateMainnetFork({
+      network: 'arbitrum-mainnet',
+      blockNumber: 22681510,
+    });
+  });
 
+  it('tests updating implementation', async () => {
     const crv = (await hre.ethers.getContractAt(
       '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
       addresses.CRV,
@@ -45,6 +49,7 @@ describe('Update Implementation', () => {
     const newUser = signers[0];
 
     const owner = '0xee2a909e3382cdf45a0d391202aff3fb11956ad1';
+    const timelock = '0x39b54de853d9dca48e928a273c3bb5fa0299540a';
     const keeper = '0x0C0e6d63A7933e1C2dE16E1d5E61dB1cA802BF51';
     const oldUser = '0x507c7777837b85ede1e67f5a4554ddd7e58b1f87';
     const proxyAdmin = '0xA335Dd9CeFBa34449c0A89FB4d247f395C5e3782';
@@ -64,6 +69,11 @@ describe('Update Implementation', () => {
     await hre.network.provider.request({
       method: 'hardhat_impersonateAccount',
       params: [owner],
+    });
+
+    await hre.network.provider.request({
+      method: 'hardhat_impersonateAccount',
+      params: [timelock],
     });
 
     await hre.network.provider.request({
@@ -101,20 +111,17 @@ describe('Update Implementation', () => {
       })
     ).deploy();
 
-    const vaultLogicDeployment = await deploy('CurveYieldStrategyLogic', {
-      contract: 'CurveYieldStrategy',
-      libraries: {
-        SwapManager: swapManager.address,
-        Logic: logic.address,
-      },
-      from: newUser.address,
-      log: true,
-      waitConfirmations: undefined,
-    });
-
-    const vaultLogic = await hre.ethers.getContractAt('CurveYieldStrategy', vaultLogicDeployment.address);
+    const vaultLogic = await (
+      await hre.ethers.getContractFactory('CurveYieldStrategy', {
+        libraries: {
+          ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
+          ['contracts/libraries/Logic.sol:Logic']: logic.address,
+        },
+      })
+    ).deploy(await vaultWithLogicAbi.swapSimulator());
 
     const ownerSigner = await hre.ethers.getSigner(owner);
+    const timelockSigner = await hre.ethers.getSigner(owner);
     const keeperSigner = await hre.ethers.getSigner(keeper);
     const oldUserSigner = await hre.ethers.getSigner(oldUser);
     const proxyAdminSigner = await hre.ethers.getSigner(proxyAdmin);
@@ -377,18 +384,14 @@ describe('Update Implementation', () => {
       })
     ).deploy();
 
-    const vaultLogicDeployment = await deploy('CurveYieldStrategyLogic', {
-      contract: 'CurveYieldStrategy',
-      libraries: {
-        SwapManager: swapManager.address,
-        Logic: logic.address,
-      },
-      from: newUser.address,
-      log: true,
-      waitConfirmations: undefined,
-    });
-
-    const vaultLogic = await hre.ethers.getContractAt('CurveYieldStrategy', vaultLogicDeployment.address);
+    const vaultLogic = await (
+      await hre.ethers.getContractFactory('CurveYieldStrategy', {
+        libraries: {
+          ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
+          ['contracts/libraries/Logic.sol:Logic']: logic.address,
+        },
+      })
+    ).deploy(await vaultWithLogicAbi.swapSimulator());
 
     const ownerSigner = await hre.ethers.getSigner(owner);
     const keeperSigner = await hre.ethers.getSigner(keeper);

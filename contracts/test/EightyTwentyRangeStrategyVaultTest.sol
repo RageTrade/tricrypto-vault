@@ -27,7 +27,10 @@ contract EightyTwentyRangeStrategyVaultTest is EightyTwentyRangeStrategyVault {
         EightyTwentyRangeStrategyVaultInitParams memory eightyTwentyRangeStrategyVaultInitParams,
         uint256 _priceX128,
         address _tokenTreasury
-    ) initializer {
+    )
+        initializer
+        EightyTwentyRangeStrategyVault(eightyTwentyRangeStrategyVaultInitParams.baseVaultInitParams.swapSimulator)
+    {
         __EightyTwentyRangeStrategyVault_init(eightyTwentyRangeStrategyVaultInitParams);
         priceX128 = _priceX128;
         tokenTreasury = _tokenTreasury;

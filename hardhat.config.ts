@@ -8,6 +8,7 @@ import 'solidity-coverage';
 import '@nomiclabs/hardhat-etherscan';
 import '@protodev-rage/hardhat-tenderly';
 import 'hardhat-dependency-compiler';
+import 'hardhat-storage-layout-changes';
 
 import { config } from 'dotenv';
 import { ethers } from 'ethers';
@@ -175,5 +176,9 @@ export default {
   tenderly: {
     project: process.env.TENDERLY_PROJECT,
     username: process.env.TENDERLY_USERNAME,
+  },
+  storageLayoutChanges: {
+    contracts: ['CurveYieldStrategy', 'VaultPeriphery'],
+    fullPath: false,
   },
 };

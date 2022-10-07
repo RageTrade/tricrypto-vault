@@ -16,6 +16,8 @@
     "format": "prettier --check contracts test",
     "format:fix": "prettier --write contracts test",
     "size": "hardhat size-contracts",
+    "storage-layout:check": "hardhat storage-layout --check",
+    "storage-layout:update": "hardhat storage-layout --update",
     "test": "TS_NODE_SKIP_IGNORE=true hardhat test",
     "typechain": "hardhat typechain",
     "patch-package": "patch-package --patch-dir .patches"
@@ -61,6 +63,7 @@
     "hardhat-contract-sizer": "^2.1.1",
     "hardhat-deploy": "^0.10.5",
     "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-storage-layout-changes": "^0.1.0",
     "hardhat-tracer": "^1.1.0-rc.5",
     "patch-package": "^6.4.7",
     "prettier": "^2.6.2",
