@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import hre, { ethers } from 'hardhat';
-import addresses from '../test/fixtures/addresses';
-import { increaseBlockTimestamp } from '../test/utils/vault-helpers';
+import addresses from './fixtures/addresses';
+import { increaseBlockTimestamp } from './utils/vault-helpers';
 import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter } from '../typechain-types';
 import { activateMainnetFork } from './utils/mainnet-fork';
