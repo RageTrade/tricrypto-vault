@@ -17,7 +17,10 @@ import { ICurveStableSwap } from '../interfaces/curve/ICurveStableSwap.sol';
 import { ISwapRouter } from '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 
 contract CurveYieldStrategyTest is CurveYieldStrategy {
-    constructor(CurveYieldStrategyInitParams memory params) initializer {
+    constructor(CurveYieldStrategyInitParams memory params)
+        initializer
+        CurveYieldStrategy(params.eightyTwentyRangeStrategyVaultInitParams.baseVaultInitParams.swapSimulator)
+    {
         __CurveYieldStrategy_init(params);
     }
 

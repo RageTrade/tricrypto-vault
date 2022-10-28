@@ -7,6 +7,8 @@ import { IClearingHouse } from '@ragetrade/core/contracts/interfaces/IClearingHo
 import { IUniswapV3Pool } from '@uniswap/v3-core-0.8-support/contracts/interfaces/IUniswapV3Pool.sol';
 
 interface IBaseVault {
+    event PriceInfo(uint256 assetPriceX128);
+
     function rebalance() external;
 
     function closeTokenPosition() external;

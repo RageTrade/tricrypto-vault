@@ -17,7 +17,7 @@ contract BaseVaultTest is BaseVault {
         IERC20Metadata token,
         address rageClearingHouse,
         address clearingHouseLens
-    ) initializer {
+    ) initializer BaseVault(address(0)) {
         __BaseVault_init(
             BaseVaultInitParams({
                 rageErc4626InitParams: RageERC4626InitParams({ asset: token, name: 'name', symbol: 'symbol' }),

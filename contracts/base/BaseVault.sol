@@ -36,7 +36,8 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
     using ClearingHouseExtsload for IClearingHouse;
 
     ClearingHouseLens internal lens;
-    ISwapSimulator public swapSimulator;
+    ISwapSimulator private swapSimulator__unused; // kept to not break storage layout
+    ISwapSimulator public immutable swapSimulator;
     IClearingHouse public rageClearingHouse;
 
     IERC20Metadata internal rageSettlementToken;
@@ -65,6 +66,10 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
         _;
     }
 
+    constructor(address _swapSimulator) {
+        swapSimulator = ISwapSimulator(_swapSimulator);
+    }
+
     struct BaseVaultInitParams {
         RageERC4626InitParams rageErc4626InitParams;
         uint32 ethPoolId;
@@ -82,7 +87,7 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
 
         ethPoolId = params.ethPoolId;
         lens = ClearingHouseLens(params.clearingHouseLens);
-        swapSimulator = ISwapSimulator(params.swapSimulator);
+        swapSimulator__unused = ISwapSimulator(params.swapSimulator);
 
         rageClearingHouse = IClearingHouse(params.rageClearingHouse);
         rageAccountNo = rageClearingHouse.createAccount();
@@ -262,6 +267,7 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
     /// @notice converts all non-asset balances into asset
     /// @dev to be called before functions which allocate and deallocate shares (deposit, withdraw, mint and redeem)
     function _beforeShareAllocation() internal virtual override {
+        emit PriceInfo(getPriceX128());
         _rebalanceProfitAndCollateral();
     }
 

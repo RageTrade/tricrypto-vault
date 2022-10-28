@@ -145,7 +145,7 @@ export const eightyTwentyCurveStrategyFixture = deployments.createFixture(async 
     admin,
   );
 
-  const curveYieldStrategyTest = await curveYieldStrategyTestFactory.deploy();
+  const curveYieldStrategyTest = await curveYieldStrategyTestFactory.deploy(pool0.SwapSimulator.address);
 
   await collateralToken.grantRole(await collateralToken.MINTER_ROLE(), curveYieldStrategyTest.address);
 

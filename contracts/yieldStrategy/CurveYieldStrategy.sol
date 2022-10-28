@@ -54,6 +54,8 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     /* solhint-disable var-name-mixedcase */
     uint256 public FEE = 1000;
 
+    constructor(address _swapSimulator) EightyTwentyRangeStrategyVault(_swapSimulator) {}
+
     function initialize(CurveYieldStrategyInitParams memory curveYieldStrategyInitParams) external initializer {
         __CurveYieldStrategy_init(curveYieldStrategyInitParams);
     }
