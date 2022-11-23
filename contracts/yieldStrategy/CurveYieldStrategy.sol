@@ -21,6 +21,8 @@ import { FixedPoint128 } from '@uniswap/v3-core-0.8-support/contracts/libraries/
 
 import { SwapManager } from '../libraries/SwapManager.sol';
 
+import { IBooster } from '../interfaces/convex/IBooster.sol';
+import { IConvexRewardPool } from '../interfaces/convex/IConvexRewardPool.sol';
 import { Logic } from '../libraries/Logic.sol';
 
 contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
@@ -29,14 +31,12 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     error CYS_INVALID_SETTER_VALUE();
     error CYS_EXTERAL_CALL_FAILED(string reason);
 
-    IGaugeFactory private constant GAUGE_FACTORY = IGaugeFactory(0xabC000d88f23Bb45525E447528DBF656A9D55bf5);
-
     IERC20 private usdt; // 6 decimals
     IERC20 private weth; // 18 decimals
     IERC20 private usdc; // 6 decimals
     IERC20 private crvToken; // 18 decimals
 
-    ICurveGauge private gauge; // curve gauge, which gives CRV emissions for staking triCrypto LP token
+    IConvexRewardPool private convexRewardPool; // curve convexRewardPool, which gives CRV emissions for staking triCrypto LP token
     ISwapRouter private uniV3Router; // uniswap swap router
     ILPPriceGetter private lpPriceHolder; // price-manipulation resistant triCrypto lp price oracle
     ICurveStableSwap private triCryptoPool; // triCrypto stableSwap address
@@ -66,7 +66,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         IERC20 usdc;
         IERC20 weth;
         IERC20 crvToken;
-        ICurveGauge gauge;
+        IConvexRewardPool convexRewardPool;
         ISwapRouter uniV3Router;
         ILPPriceGetter lpPriceHolder;
         ICurveStableSwap tricryptoPool;
@@ -78,7 +78,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         usdt = params.usdt;
         usdc = params.usdc;
         weth = params.weth;
-        gauge = params.gauge;
+        convexRewardPool = params.convexRewardPool;
         crvToken = params.crvToken;
         uniV3Router = params.uniV3Router;
         triCryptoPool = params.tricryptoPool;
@@ -90,12 +90,12 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         uint256 _stablecoinSlippage,
         uint256 _crvHarvestThreshold,
         uint256 _crvSlippageTolerance,
-        ICurveGauge _gauge,
+        IConvexRewardPool _convexRewardPool,
         AggregatorV3Interface _crvOracle
     ) external onlyOwner {
         if (_feeBps < MAX_BPS && _stablecoinSlippage < MAX_BPS && _crvSlippageTolerance < MAX_BPS) {
             FEE = _feeBps;
-            gauge = _gauge;
+            convexRewardPool = _convexRewardPool;
             crvOracle = _crvOracle;
             crvHarvestThreshold = _crvHarvestThreshold;
             crvSwapSlippageTolerance = _crvSlippageTolerance;
@@ -107,7 +107,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
             _stablecoinSlippage,
             _crvHarvestThreshold,
             _crvSlippageTolerance,
-            address(_gauge),
+            address(_convexRewardPool),
             address(_crvOracle)
         );
     }
@@ -116,7 +116,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     function grantAllowances() public override onlyOwner {
         _grantBaseAllowances();
 
-        asset.approve(address(gauge), type(uint256).max);
+        asset.approve(address(convexRewardPool), type(uint256).max);
         asset.approve(address(triCryptoPool), type(uint256).max);
 
         /// @dev USDT requires allowance set to 0 before re-approving
@@ -149,7 +149,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     /// @param amount amount of LP tokens
     function _beforeWithdrawYield(uint256 amount) internal override {
         emit Logic.StateInfo(lpPriceHolder.lp_price());
-        gauge.withdraw(amount);
+        convexRewardPool.withdraw(amount, false);
         _harvestFees();
     }
 
@@ -167,11 +167,10 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         _stake(asset.balanceOf(address(this)));
     }
 
-    /// @notice claims the accumulated CRV rewards from the gauge, sells CRV rewards for LP tokens and stakes LP tokens
+    /// @notice claims the accumulated CRV rewards from the convexRewardPool, sells CRV rewards for LP tokens and stakes LP tokens
     function _harvestFees() internal override {
         uint256 before = crvToken.balanceOf(address(this));
-        GAUGE_FACTORY.mint(address(gauge));
-        gauge.claim_rewards();
+        convexRewardPool.getReward(address(this));
         uint256 afterBal = crvToken.balanceOf(address(this));
 
         uint256 claimable = (afterBal - before) + crvPendingToSwap;
@@ -220,19 +219,19 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         }
     }
 
-    /// @notice stakes LP tokens (i.e deposits into reward gauge)
+    /// @notice stakes LP tokens (i.e deposits into reward convexRewardPool)
     /// @param amount amount of LP tokens
     function _stake(uint256 amount) internal override {
-        gauge.deposit(amount);
+        IBooster(convexRewardPool.convexBooster()).deposit(3, amount);
         emit Logic.Staked(amount, msg.sender);
     }
 
-    /// @notice total LP tokens staked in the curve rewards gauge
+    /// @notice total LP tokens staked in the curve rewards convexRewardPool
     function _stakedAssetBalance() internal view override returns (uint256) {
-        return gauge.balanceOf(address(this));
+        return convexRewardPool.balanceOf(address(this));
     }
 
-    /// @notice withdraws LP tokens from gauge, sells LP token for settlementToken
+    /// @notice withdraws LP tokens from convexRewardPool, sells LP token for settlementToken
     /// @param amount amount of LP tokens
     function _convertAssetToSettlementToken(uint256 amount) internal override returns (uint256 usdcAmount) {
         return
@@ -240,7 +239,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
                 amount,
                 stablecoinSlippageTolerance,
                 lpPriceHolder,
-                gauge,
+                convexRewardPool,
                 triCryptoPool,
                 usdt,
                 uniV3Router,
@@ -259,9 +258,10 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
         return Logic.getPriceX128(lpPriceHolder);
     }
 
-    /// @notice migrates funds from curvefi's old gauge to new gauge
+    /// @notice migrates funds from curvefi's gauge to convex rewardPool
     /// @dev this method is intended for one time use
     function migrate() external onlyOwner {
+        //TODO: add harvest of fees and add to crv pending to swap
         Logic.migrate();
     }
 }
