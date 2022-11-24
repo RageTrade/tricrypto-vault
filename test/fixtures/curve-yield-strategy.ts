@@ -3,6 +3,7 @@ import { ERC20 } from '../../typechain-types/artifacts/@openzeppelin/contracts/t
 import {
   AggregatorV3Interface,
   CurveYieldStrategyTest__factory,
+  IConvexRewardPool__factory,
   ICurveGauge,
   ICurveStableSwap,
   ILPPriceGetter,
@@ -91,6 +92,8 @@ export const curveYieldStrategyFixture = deployments.createFixture(async hre => 
     })
   ).deploy();
 
+  const cvxRewardPool = IConvexRewardPool__factory.connect(addresses.CVX_REWARD_POOL, signer);
+
   let curveYieldStrategyTestFactory = new CurveYieldStrategyTest__factory(
     {
       ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
@@ -122,7 +125,7 @@ export const curveYieldStrategyFixture = deployments.createFixture(async hre => 
     usdc: addresses.USDC,
     weth: addresses.WETH,
     crvToken: addresses.CRV,
-    gauge: addresses.NEW_GAUGE,
+    convexRewardPool: addresses.CVX_REWARD_POOL,
     uniV3Router: addresses.ROUTER,
     lpPriceHolder: addresses.QUOTER,
     tricryptoPool: addresses.TRICRYPTO_POOL,
@@ -142,7 +145,14 @@ export const curveYieldStrategyFixture = deployments.createFixture(async hre => 
 
   await settlementToken.approve(clearingHouse.address, parseTokenAmount(10n ** 5n, 6));
 
-  await curveYieldStrategyTest.updateCurveParams(1_000, 1_000, 0, 4_000, addresses.NEW_GAUGE, addresses.CRV_ORACLE);
+  await curveYieldStrategyTest.updateCurveParams(
+    1_000,
+    1_000,
+    0,
+    4_000,
+    addresses.CVX_REWARD_POOL,
+    addresses.CRV_ORACLE,
+  );
 
   return {
     crv,
@@ -156,6 +166,7 @@ export const curveYieldStrategyFixture = deployments.createFixture(async hre => 
     triCrypto,
     crvOracle,
     uniswapQuoter,
+    cvxRewardPool,
     curveYieldStrategyTest,
   };
 });

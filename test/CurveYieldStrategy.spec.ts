@@ -1,4 +1,3 @@
-import { Logic } from '@ragetrade/sdk/dist/typechain/vaults';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { formatUnits, LogDescription, _fetchData } from 'ethers/lib/utils';
@@ -50,7 +49,13 @@ describe('CurveYieldStrategy', () => {
 
     it('should transfer lp tokens & mint shares', async () => {
       const [admin, user1, user2] = await hre.ethers.getSigners();
-      const { gauge, lpToken, curveYieldStrategyTest: curveYieldStrategy } = await curveYieldStrategyFixture();
+      const {
+        gauge,
+        lpToken,
+        curveYieldStrategyTest: curveYieldStrategy,
+        cvxRewardPool,
+      } = await curveYieldStrategyFixture();
+
       await curveYieldStrategy.grantAllowances();
 
       await hre.network.provider.request({
@@ -674,7 +679,14 @@ describe('CurveYieldStrategy', () => {
       const curveYieldStrategy = curveYieldStrategyTest.connect(admin);
       await curveYieldStrategy.grantAllowances();
 
-      await curveYieldStrategy.updateCurveParams(2_000, 1_000, 0, 3_000, addresses.NEW_GAUGE, addresses.CRV_ORACLE);
+      await curveYieldStrategy.updateCurveParams(
+        2_000,
+        1_000,
+        0,
+        3_000,
+        addresses.CVX_REWARD_POOL,
+        addresses.CRV_ORACLE,
+      );
       expect(await curveYieldStrategy.FEE()).to.be.eq(BigNumber.from(2000));
     });
 
@@ -685,7 +697,14 @@ describe('CurveYieldStrategy', () => {
       await curveYieldStrategy.grantAllowances();
 
       await expect(
-        curveYieldStrategyTest.updateCurveParams(10_001, 1_000, 0, 3_000, addresses.NEW_GAUGE, addresses.CRV_ORACLE),
+        curveYieldStrategyTest.updateCurveParams(
+          10_001,
+          1_000,
+          0,
+          3_000,
+          addresses.CVX_REWARD_POOL,
+          addresses.CRV_ORACLE,
+        ),
       ).to.be.revertedWith('CYS_INVALID_SETTER_VALUE()');
     });
 
@@ -756,7 +775,7 @@ describe('CurveYieldStrategy', () => {
 
       await curveYieldStrategy
         .connect(admin)
-        .updateCurveParams(1000, 4_000, 0, 100, addresses.NEW_GAUGE, addresses.CRV_ORACLE);
+        .updateCurveParams(1000, 4_000, 0, 100, addresses.CVX_REWARD_POOL, addresses.CRV_ORACLE);
 
       // await gauge.claimable_reward_write(curveYieldStrategy.address, crv.address);
       const claimable_ = await gauge.claimable_reward(curveYieldStrategy.address, crv.address);
@@ -784,7 +803,7 @@ describe('CurveYieldStrategy', () => {
 
       await curveYieldStrategy
         .connect(admin)
-        .updateCurveParams(1000, 4_000, 0, 3_000, addresses.NEW_GAUGE, addresses.CRV_ORACLE);
+        .updateCurveParams(1000, 4_000, 0, 3_000, addresses.CVX_REWARD_POOL, addresses.CRV_ORACLE);
 
       const tx2 = await (await curveYieldStrategy.harvestFees()).wait();
 
