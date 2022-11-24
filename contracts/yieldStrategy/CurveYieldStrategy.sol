@@ -116,7 +116,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     function grantAllowances() public override onlyOwner {
         _grantBaseAllowances();
 
-        asset.approve(address(convexRewardPool), type(uint256).max);
+        asset.approve(address(convexRewardPool.convexBooster()), type(uint256).max);
         asset.approve(address(triCryptoPool), type(uint256).max);
 
         /// @dev USDT requires allowance set to 0 before re-approving
@@ -222,7 +222,7 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     /// @notice stakes LP tokens (i.e deposits into reward convexRewardPool)
     /// @param amount amount of LP tokens
     function _stake(uint256 amount) internal override {
-        IBooster(convexRewardPool.convexBooster()).deposit(3, amount);
+        if (amount > 0) IBooster(convexRewardPool.convexBooster()).deposit(3, amount);
         emit Logic.Staked(amount, msg.sender);
     }
 
