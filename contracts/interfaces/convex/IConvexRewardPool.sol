@@ -14,6 +14,10 @@ interface IConvexRewardPool {
 
     function getReward(address _account, address _forwardTo) external;
 
+    function user_checkpoint(address _account) external returns (bool);
+
+    function claimable_reward(address _account, address _token) external view returns (uint256);
+
     function convexBooster() external view returns (address);
 
     function balanceOf(address) external view returns (uint256);

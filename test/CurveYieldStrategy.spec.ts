@@ -514,6 +514,7 @@ describe('CurveYieldStrategy', () => {
         lpOracle,
         crvOracle,
         uniswapQuoter,
+        cvxRewardPool,
         curveYieldStrategyTest: curveYieldStrategy,
       } = await curveYieldStrategyFixture();
       await curveYieldStrategy.grantAllowances();
@@ -532,13 +533,9 @@ describe('CurveYieldStrategy', () => {
       await curveYieldStrategy.connect(admin).updateBaseParams(amount.mul(2), ethers.constants.AddressZero, 0, 0);
 
       await lpToken.connect(whale).transfer(user1.address, amount1);
-      await lpToken.connect(whale).transfer(user2.address, amount2);
-
       await lpToken.connect(user1).approve(curveYieldStrategy.address, amount1);
-      await lpToken.connect(user2).approve(curveYieldStrategy.address, amount2);
 
       await curveYieldStrategy.connect(user1).deposit(amount1, user1.address);
-      await curveYieldStrategy.connect(user2).deposit(amount2, user1.address);
 
       const [totalAssetsBefore, crvBalanceBefore] = await Promise.all([
         curveYieldStrategy.convertToAssets(amount),
@@ -548,8 +545,9 @@ describe('CurveYieldStrategy', () => {
       await hre.network.provider.send('evm_increaseTime', [10_000_000]);
       await hre.network.provider.send('evm_mine', []);
 
-      // await gauge.claimable_reward_write(curveYieldStrategy.address, addresses.CRV);
-      const claimableReward = await gauge.claimable_reward(curveYieldStrategy.address, addresses.CRV);
+      await cvxRewardPool.user_checkpoint(curveYieldStrategy.address);
+
+      const claimableReward = await cvxRewardPool.claimable_reward(addresses.CRV, curveYieldStrategy.address);
 
       const estimatedSwapOutput = await uniswapQuoter.callStatic.quoteExactInput(
         '0x11cdb42b0eb46d95f990bedd4695a6e3fa034978000bb882af49447d8a07e3bd95bd0d56f35241523fbab10001f4fd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
@@ -749,7 +747,13 @@ describe('CurveYieldStrategy', () => {
 
     it('should trigger crv slippage tolerance & withdraw correct fees', async () => {
       const [admin, user] = await hre.ethers.getSigners();
-      const { gauge, lpToken, crv, curveYieldStrategyTest: curveYieldStrategy } = await curveYieldStrategyFixture();
+      const {
+        gauge,
+        lpToken,
+        crv,
+        curveYieldStrategyTest: curveYieldStrategy,
+        cvxRewardPool,
+      } = await curveYieldStrategyFixture();
       await curveYieldStrategy.grantAllowances();
 
       await hre.network.provider.request({
@@ -775,10 +779,9 @@ describe('CurveYieldStrategy', () => {
 
       await curveYieldStrategy
         .connect(admin)
-        .updateCurveParams(1000, 4_000, 0, 100, addresses.CVX_REWARD_POOL, addresses.CRV_ORACLE);
+        .updateCurveParams(1000, 4_000, 0, 10, addresses.CVX_REWARD_POOL, addresses.CRV_ORACLE);
 
-      // await gauge.claimable_reward_write(curveYieldStrategy.address, crv.address);
-      const claimable_ = await gauge.claimable_reward(curveYieldStrategy.address, crv.address);
+      const claimable_ = await cvxRewardPool.claimable_reward(addresses.CRV, curveYieldStrategy.address);
 
       const logInterface = new ethers.utils.Interface([
         'event CrvSwapFailedDueToSlippage(uint256 crvSlippageTolerance)',
