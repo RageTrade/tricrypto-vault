@@ -505,7 +505,7 @@ describe('CurveYieldStrategy', () => {
       ).to.be.true;
     });
 
-    it.skip('should deduct rage fee (10% which can be changed)', async () => {
+    it('should deduct rage fee (10% which can be changed)', async () => {
       const [admin, user1, user2] = await hre.ethers.getSigners();
       const {
         crv,
