@@ -9,13 +9,13 @@ import {
 } from '../../typechain-types';
 
 import { parseTokenAmount, priceToPriceX128, truncate } from '@ragetrade/sdk';
-import { AggregatorV3Interface } from '@ragetrade/sdk/dist/typechain/vaults';
 
 import addresses from './addresses';
 import { updateSettlementTokenMargin } from '../utils/rage-helpers';
 import { stealFunds } from '../utils/steal-funds';
 import { rageTradeFixture } from './ragetrade-core-integration';
 import { unlockWhales } from '../utils/curve-helper';
+import { AggregatorV3Interface } from '@ragetrade/sdk/dist/typechain/core';
 
 export const eightyTwentyCurveStrategyFixture = deployments.createFixture(async hre => {
   const { clearingHouse, settlementToken, pool0 } = await rageTradeFixture();
@@ -176,7 +176,7 @@ export const eightyTwentyCurveStrategyFixture = deployments.createFixture(async 
     usdc: addresses.USDC,
     weth: addresses.WETH,
     crvToken: addresses.CRV,
-    gauge: addresses.NEW_GAUGE,
+    convexRewardPool: addresses.CVX_REWARD_POOL,
     uniV3Router: addresses.ROUTER,
     lpPriceHolder: addresses.QUOTER,
     tricryptoPool: addresses.TRICRYPTO_POOL,
@@ -193,7 +193,14 @@ export const eightyTwentyCurveStrategyFixture = deployments.createFixture(async 
   await lpToken.connect(whale).transfer(user2.address, parseTokenAmount(25n, 18));
   await lpToken.connect(user2).approve(curveYieldStrategyTest.address, parseTokenAmount(50n, 18));
 
-  await curveYieldStrategyTest.updateCurveParams(1_000, 1_000, 0, 3_000, addresses.NEW_GAUGE, addresses.CRV_ORACLE);
+  await curveYieldStrategyTest.updateCurveParams(
+    1_000,
+    1_000,
+    0,
+    3_000,
+    addresses.CVX_REWARD_POOL,
+    addresses.CRV_ORACLE,
+  );
 
   await curveYieldStrategyTest.grantAllowances();
 

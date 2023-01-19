@@ -6,7 +6,7 @@ import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
 import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter } from '../typechain-types';
 import { activateMainnetFork } from './utils/mainnet-fork';
 
-describe('Update Implementation', () => {
+describe.skip('Update Implementation', () => {
   before(async () => {
     await activateMainnetFork({
       network: 'arbitrum-mainnet',

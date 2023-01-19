@@ -1,7 +1,5 @@
-import { BaseVaultTest__factory } from '@ragetrade/sdk/dist/typechain/vaults';
 import { deployments } from 'hardhat';
 import { SettlementTokenMock } from '../../typechain-types';
-import { ERC20 } from '../../typechain-types/artifacts/@openzeppelin/contracts/token/ERC20';
 import { rageTradeFixture } from './ragetrade-core';
 
 export const baseVaultFixture = deployments.createFixture(async hre => {

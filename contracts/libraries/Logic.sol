@@ -27,6 +27,8 @@ import { ISwapSimulator } from '../interfaces/ISwapSimulator.sol';
 import { ICurveGauge } from '../interfaces/curve/ICurveGauge.sol';
 import { ILPPriceGetter } from '../interfaces/curve/ILPPriceGetter.sol';
 import { ICurveStableSwap } from '../interfaces/curve/ICurveStableSwap.sol';
+import { IBooster } from '../interfaces/convex/IBooster.sol';
+import { IConvexRewardPool } from '../interfaces/convex/IConvexRewardPool.sol';
 
 import { SafeCast } from '../libraries/SafeCast.sol';
 import { SwapManager } from '../libraries/SwapManager.sol';
@@ -57,7 +59,7 @@ library Logic {
         uint256 stablecoinSlippage,
         uint256 crvHarvestThreshold,
         uint256 crvSlippageTolerance,
-        address indexed gauge,
+        address indexed convexRewardPool,
         address indexed crvOracle
     );
 
@@ -275,7 +277,7 @@ library Logic {
         uint256 amount,
         uint256 slippage,
         ILPPriceGetter lpPriceHolder,
-        ICurveGauge gauge,
+        IConvexRewardPool rewardPool,
         ICurveStableSwap triCryptoPool,
         IERC20 usdt,
         ISwapRouter uniV3Router,
@@ -284,7 +286,7 @@ library Logic {
         uint256 pricePerLP = lpPriceHolder.lp_price();
         uint256 lpToWithdraw = ((amount * (10**12)) * (10**18)) / pricePerLP;
 
-        gauge.withdraw(lpToWithdraw);
+        rewardPool.withdraw(lpToWithdraw, false);
         triCryptoPool.remove_liquidity_one_coin(lpToWithdraw, 0, 0);
 
         uint256 balance = usdt.balanceOf(address(this));
@@ -308,15 +310,16 @@ library Logic {
     }
 
     function migrate() external {
-        ICurveGauge oldGauge = ICurveGauge(0x97E2768e8E73511cA874545DC5Ff8067eB19B787);
-        ICurveGauge newGauge = ICurveGauge(0x555766f3da968ecBefa690Ffd49A2Ac02f47aa5f);
+        ICurveGauge curveGauge = ICurveGauge(0x555766f3da968ecBefa690Ffd49A2Ac02f47aa5f);
+        IBooster cvxBooster = IBooster(0xF403C135812408BFbE8713b5A23a04b3D48AAE31);
         IERC20 triCrypto = IERC20(0x8e0B8c8BB9db49a46697F3a5Bb8A308e744821D2);
 
-        uint256 bal = oldGauge.balanceOf(address(this));
+        uint256 bal = curveGauge.balanceOf(address(this));
 
-        triCrypto.approve(address(oldGauge), 0);
+        triCrypto.approve(address(curveGauge), 0);
 
-        oldGauge.withdraw(bal);
-        newGauge.deposit(bal);
+        curveGauge.withdraw(bal);
+        bool success = cvxBooster.depositAll(3);
+        require(success, 'Boost Failed');
     }
 }
