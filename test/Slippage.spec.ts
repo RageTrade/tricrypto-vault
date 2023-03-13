@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { parseUnits, _fetchData } from 'ethers/lib/utils';
 import hre, { ethers } from 'hardhat';
-import { AggregatorV3Interface, ERC20 } from '../typechain-types';
+import { ERC20 } from '../typechain-types';
+import { parseUnits, _fetchData } from 'ethers/lib/utils';
 
 import addresses from './fixtures/addresses';
 import { unlockWhales } from './utils/curve-helper';
@@ -27,7 +27,7 @@ const changePriceToken = async (asset: 'USDC' | 'USDT', price: number) => {
 
 describe('CurveYieldStrategy', () => {
   it('usdt to usdc - revert', async () => {
-    const [admin, user1, user2] = await hre.ethers.getSigners();
+    const [admin] = await hre.ethers.getSigners();
 
     const swapManagerLib = await (await hre.ethers.getContractFactory('SwapManager')).deploy();
 
@@ -43,21 +43,6 @@ describe('CurveYieldStrategy', () => {
       '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
       addresses.USDC,
     )) as ERC20;
-
-    const usdt = (await hre.ethers.getContractAt(
-      '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
-      addresses.USDT,
-    )) as ERC20;
-
-    const usdcOracle = (await hre.ethers.getContractAt(
-      '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol:AggregatorV3Interface',
-      addresses.USDC_ORACLE,
-    )) as AggregatorV3Interface;
-
-    const usdtOracle = (await hre.ethers.getContractAt(
-      '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol:AggregatorV3Interface',
-      addresses.USDT_ORACLE,
-    )) as AggregatorV3Interface;
 
     await unlockWhales();
     const usdcWhale = await hre.ethers.getSigner(addresses.USDC_WHALE);
@@ -69,7 +54,7 @@ describe('CurveYieldStrategy', () => {
     await swapManager.connect(admin).swapUsdcToUsdtAndAddLiquidity(amount, 3);
 
     // increase price of usdc, so we give in less usdc to get same amount of usdt compared to when usdc = 1$
-    await changePriceToken('USDT', 1.05);
+    await changePriceToken('USDC', 1.05);
 
     await usdc.connect(usdcWhale).transfer(swapManager.address, amount);
     await expect(swapManager.connect(admin).swapUsdcToUsdtAndAddLiquidity(amount, 3)).to.be.revertedWith(
@@ -78,7 +63,7 @@ describe('CurveYieldStrategy', () => {
   });
 
   it('usdc to usdt - revert', async () => {
-    const [admin, user1, user2] = await hre.ethers.getSigners();
+    const [admin] = await hre.ethers.getSigners();
 
     const swapManagerLib = await (await hre.ethers.getContractFactory('SwapManager')).deploy();
 
@@ -90,25 +75,10 @@ describe('CurveYieldStrategy', () => {
       })
     ).deploy();
 
-    const usdc = (await hre.ethers.getContractAt(
-      '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
-      addresses.USDC,
-    )) as ERC20;
-
     const usdt = (await hre.ethers.getContractAt(
       '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
       addresses.USDT,
     )) as ERC20;
-
-    const usdcOracle = (await hre.ethers.getContractAt(
-      '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol:AggregatorV3Interface',
-      addresses.USDC_ORACLE,
-    )) as AggregatorV3Interface;
-
-    const usdtOracle = (await hre.ethers.getContractAt(
-      '@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol:AggregatorV3Interface',
-      addresses.USDT_ORACLE,
-    )) as AggregatorV3Interface;
 
     await unlockWhales();
     const usdtWhale = await hre.ethers.getSigner(addresses.USDT_WHALE);
