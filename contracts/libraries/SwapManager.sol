@@ -11,8 +11,14 @@ import { AggregatorV3Interface } from '@chainlink/contracts/src/v0.8/interfaces/
 
 library SwapManager {
     error CYS_NEGATIVE_CRV_PRICE();
+    error CYS_NEGATIVE_USDC_PRICE();
+    error CYS_NEGATIVE_USDT_PRICE();
 
     uint256 internal constant MAX_BPS = 10_000;
+    AggregatorV3Interface internal constant USDC_ORACLE =
+        AggregatorV3Interface(0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3);
+    AggregatorV3Interface internal constant USDT_ORACLE =
+        AggregatorV3Interface(0x3f3f5dF88dC9F13eac63DF89EC16ef6e7E25DdE7);
 
     function _getCrvPrice(AggregatorV3Interface crvOracle) internal view returns (uint256) {
         (, int256 answer, , , ) = crvOracle.latestRoundData();
@@ -20,19 +26,31 @@ library SwapManager {
         return (uint256(answer));
     }
 
+    function _getUsdcPrice() internal view returns (uint256) {
+        (, int256 answer, , , ) = USDC_ORACLE.latestRoundData();
+        if (answer < 0) revert CYS_NEGATIVE_USDC_PRICE();
+        return (uint256(answer));
+    }
+
+    function _getUsdtPrice() internal view returns (uint256) {
+        (, int256 answer, , , ) = USDT_ORACLE.latestRoundData();
+        if (answer < 0) revert CYS_NEGATIVE_USDT_PRICE();
+        return (uint256(answer));
+    }
+
     function swapUsdcToUsdtAndAddLiquidity(
-        uint256 amount,
+        uint256 usdcAmount,
         uint256 slippage,
         bytes memory path,
         ISwapRouter uniV3Router,
         ICurveStableSwap triCrypto
     ) external {
-        uint256 minOut = (amount * (MAX_BPS - slippage)) / MAX_BPS;
+        uint256 minUsdtOut = (usdcAmount * (MAX_BPS - slippage) * _getUsdcPrice()) / MAX_BPS / _getUsdtPrice();
 
         ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
             path: path,
-            amountIn: amount,
-            amountOutMinimum: minOut,
+            amountIn: usdcAmount,
+            amountOutMinimum: minUsdtOut,
             recipient: address(this),
             deadline: block.timestamp
         });
@@ -45,17 +63,17 @@ library SwapManager {
     }
 
     function swapUsdtToUsdc(
-        uint256 amount,
+        uint256 usdtAmount,
         uint256 slippage,
         bytes memory path,
         ISwapRouter uniV3Router
     ) external returns (uint256 usdcOut) {
-        uint256 minOut = (amount * (MAX_BPS - slippage)) / MAX_BPS;
+        uint256 minUsdcOut = (usdtAmount * (MAX_BPS - slippage) * _getUsdtPrice()) / MAX_BPS / _getUsdcPrice();
 
         ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
             path: path,
-            amountIn: amount,
-            amountOutMinimum: minOut,
+            amountIn: usdtAmount,
+            amountOutMinimum: minUsdcOut,
             recipient: address(this),
             deadline: block.timestamp
         });
