@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import hre, { ethers } from 'hardhat';
 import addresses from './fixtures/addresses';
 import { increaseBlockTimestamp } from './utils/vault-helpers';
-import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
-import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter } from '../typechain-types';
+import { formatEther, parseEther, parseUnits, formatUnits } from 'ethers/lib/utils';
+import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter, ICurveGauge__factory, IERC20__factory } from '../typechain-types';
 import { activateMainnetFork } from './utils/mainnet-fork';
 
 describe('Update Implementation', () => {
@@ -91,17 +91,10 @@ describe('Update Implementation', () => {
       params: [triCryptoWhale],
     });
 
-    const swapSimulator = await (await hre.ethers.getContractFactory('SwapSimulator')).deploy();
+    const swapSimulator = { address: await vaultWithLogicAbi.swapSimulator() };
+    const swapManager = { address: '0x88f24fC145F9209630c66cf3D302e3b5a66f772C' };
 
-    const swapManager = await (await hre.ethers.getContractFactory('SwapManager')).deploy();
-
-    const logic = await (
-      await hre.ethers.getContractFactory('Logic', {
-        libraries: {
-          ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
-        },
-      })
-    ).deploy();
+    const logic = { address: '0xd4598dcb1d5f905a24bbcd9cf61e4f7ab7161e10' };
 
     const vaultLogic = await (
       await hre.ethers.getContractFactory('CurveYieldStrategy', {
@@ -112,16 +105,26 @@ describe('Update Implementation', () => {
       })
     ).deploy(swapSimulator.address);
 
-    const ownerSigner = await hre.ethers.getSigner(owner);
     const timelockSigner = await hre.ethers.getSigner(timelock);
     const keeperSigner = await hre.ethers.getSigner(keeper);
     const oldUserSigner = await hre.ethers.getSigner(oldUser);
     const proxyAdminSigner = await hre.ethers.getSigner(proxyAdmin);
     const triCryptoWhaleSigner = await hre.ethers.getSigner(triCryptoWhale);
-    const vaultSigner = await hre.ethers.getSigner(vaultWithLogicAbi.address);
+
+    const rageClearingHouse = await ethers.getContractAt('ClearingHouse', await vaultWithLogicAbi.rageClearingHouse());
+    const gauge = ICurveGauge__factory.connect(addresses.NEW_GAUGE, hre.ethers.provider)
+    const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider)
+
+    console.log("TOTAL SUPPLY BEFORE:", formatEther(await vaultWithLogicAbi.totalSupply()))
+    console.log("TOTAL ASSETS BEFORE:", formatEther(await vaultWithLogicAbi.totalAssets()))
+    console.log("OUTSTANDING PNL BEFORE:", formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6))
+    console.log("TRICRYPTO BAL IN GAUGE BEFORE:", formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)))
+    console.log("USDC BAL IN 80-20 BEFORE:", formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6))
+
 
     // ADDED UPDATE BASE PARAMS AND REBALANCE
     console.log('Update base params');
+
     await vaultWithLogicAbi
       .connect(timelockSigner)
       .updateBaseParams(
@@ -130,12 +133,13 @@ describe('Update Implementation', () => {
         0,
         await vaultWithLogicAbi.rebalancePriceThresholdBps(),
       );
+
     console.log('Rebalancing');
     await vaultWithLogicAbi.connect(keeperSigner).rebalance();
+
     console.log('Rebalanced');
     await increaseBlockTimestamp(10);
 
-    const rageClearingHouse = await ethers.getContractAt('ClearingHouse', await vaultWithLogicAbi.rageClearingHouse());
     const prevState = await Promise.all([
       vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.admin(),
       vaultWithLogicAbi.owner(),
@@ -155,7 +159,7 @@ describe('Update Implementation', () => {
       vaultWithLogicAbi.rageAccountNo(),
       vaultWithLogicAbi.rageClearingHouse(),
       vaultWithLogicAbi.ethPoolId(),
-      // vaultWithLogicAbi.swapSimulator(),
+      vaultWithLogicAbi.swapSimulator(),
       vaultWithLogicAbi.isReset(),
       vaultWithLogicAbi.isValidRebalance(await vaultWithLogicAbi.getVaultMarketValue()),
       vaultWithLogicAbi.lastRebalanceTS(),
@@ -169,29 +173,8 @@ describe('Update Implementation', () => {
 
     const prevImpl = await vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.implementation();
 
-    const swapSimulatorSlot = 153;
-    const slot153before = await hre.ethers.provider.getStorageAt(vaultWithProxyAbi.address, swapSimulatorSlot);
-    //
-    //  UPGRADE TX BELOW
-    //
     await vaultWithProxyAbi.connect(proxyAdminSigner).upgradeTo(vaultLogic.address);
     console.log('Upgraded');
-    //
-    //  UPGRADE TX ABOVE
-    //
-    const slot153After = await hre.ethers.provider.getStorageAt(vaultWithProxyAbi.address, swapSimulatorSlot);
-
-    // await vaultWithLogicAbi.connect(ownerSigner).updateCurveParams(
-    //   1000, // feeBps
-    //   100, // stablecoinSlippage
-    //   parseUnits('2', 18), // crvHarvestThreshold
-    //   500, // crvSlippageTolerance
-    //   addresses.NEW_GAUGE, // gauge
-    //   '0xaebDA2c976cfd1eE1977Eac079B4382acb849325', // networkInfo.CURVE_USD_ORACLE,
-    // );
-
-    // await vaultWithLogicAbi.connect(ownerSigner).grantAllowances();
-    // await vaultWithLogicAbi.connect(ownerSigner).migrate();
 
     const postState = await Promise.all([
       vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.admin(),
@@ -212,7 +195,7 @@ describe('Update Implementation', () => {
       vaultWithLogicAbi.rageAccountNo(),
       vaultWithLogicAbi.rageClearingHouse(),
       vaultWithLogicAbi.ethPoolId(),
-      // vaultWithLogicAbi.swapSimulator(),
+      vaultWithLogicAbi.swapSimulator(),
       vaultWithLogicAbi.isReset(),
       vaultWithLogicAbi.isValidRebalance(await vaultWithLogicAbi.getVaultMarketValue()),
       vaultWithLogicAbi.lastRebalanceTS(),
@@ -224,19 +207,21 @@ describe('Update Implementation', () => {
       vaultWithLogicAbi.convertToAssets(await vaultWithLogicAbi.balanceOf(oldUser)),
     ]);
 
-    // console.log({ prevState });
-    // console.log({ postState });
     const postImpl = await vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.implementation();
 
     expect(prevState).to.deep.eq(postState);
     expect(prevImpl).to.eq(prevLogic);
     expect(postImpl).to.eq(vaultLogic.address);
-    // new swap simulator address
-    expect(await vaultWithLogicAbi.swapSimulator()).to.eq(swapSimulator.address);
-    expect(slot153After).to.eq(slot153before);
 
     console.log('Paused clearing house');
     await rageClearingHouse.connect(timelockSigner).pause(1);
+
+    console.log("TOTAL SUPPLY AFTER:", formatEther(await vaultWithLogicAbi.totalSupply()))
+    console.log("TOTAL ASSETS AFTER:", formatEther(await vaultWithLogicAbi.totalAssets()))
+    console.log("OUTSTANDING PNL AFTER:", formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6))
+    console.log("TRICRYPTO BAL IN GAUGE AFTER:", formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)))
+    console.log("USDC BAL IN 80-20 AFTER:", formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6))
+
     // old user is able to withdraw (& withdraw max)
     console.log('old user withdraw');
     await vaultWithLogicAbi
@@ -253,34 +238,7 @@ describe('Update Implementation', () => {
     console.log('new user deposit');
     await lpToken.connect(triCryptoWhaleSigner).transfer(newUser.address, parseEther('1'));
     await lpToken.connect(newUser).approve(vaultWithLogicAbi.address, ethers.constants.MaxUint256);
-
-    // await increaseBlockTimestamp(3_600 * 24);
-    // await vaultWithLogicAbi.connect(keeperSigner).rebalance();
-    // await vaultWithLogicAbi.connect(ownerSigner).withdrawFees(ownerSigner.address);
-
-    // const crvBal = await crv.balanceOf(ownerSigner.address);
-    // expect(crvBal).to.gt(0);
-
-    // const tx1 = vaultWithLogicAbi.connect(ownerSigner).updateBaseParams(
-    //   parseEther('1055'),
-    //   '0xe1829BaD81E9146E18f28E28691D930c052483bA', //networkInfo.KEEPER_ADDRESS,
-    //   86400, // rebalanceTimeThreshold
-    //   500, // rebalancePriceThresholdBps
-    // );
-    // await expect(tx1).to.emit(vaultWithLogicAbi, 'BaseParamsUpdated');
-
-    // const tx2 = await vaultWithLogicAbi.connect(ownerSigner).updateCurveParams(
-    //   1000, // feeBps
-    //   100, // stablecoinSlippage
-    //   parseUnits('2', 18), // crvHarvestThreshold
-    //   500, // crvSlippageTolerance
-    //   addresses.NEW_GAUGE, // gauge
-    //   '0xaebDA2c976cfd1eE1977Eac079B4382acb849325', // networkInfo.CURVE_USD_ORACLE,
-    // );
-    // await expect(tx2).to.emit(vaultWithLogicAbi, 'CurveParamsUpdated');
-
-    // const tx3 = vaultWithLogicAbi.connect(ownerSigner).setEightTwentyParams(150, 2000, 100e6);
-
-    // await expect(tx3).to.emit(vaultWithLogicAbi, 'EightyTwentyParamsUpdated');
+    await vaultWithLogicAbi.connect(newUser).deposit(parseEther('1'), newUser.address);
+    expect(await vaultWithLogicAbi.balanceOf(newUser.address)).to.eq(await vaultWithLogicAbi.convertToShares(parseEther('1')));
   });
 });
