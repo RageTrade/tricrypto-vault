@@ -3,7 +3,15 @@ import hre, { ethers } from 'hardhat';
 import addresses from './fixtures/addresses';
 import { increaseBlockTimestamp } from './utils/vault-helpers';
 import { formatEther, parseEther, parseUnits, formatUnits } from 'ethers/lib/utils';
-import { ERC20, ICurveGauge, IGaugeFactory, ICurveStableSwap, ILPPriceGetter, ICurveGauge__factory, IERC20__factory } from '../typechain-types';
+import {
+  ERC20,
+  ICurveGauge,
+  IGaugeFactory,
+  ICurveStableSwap,
+  ILPPriceGetter,
+  ICurveGauge__factory,
+  IERC20__factory,
+} from '../typechain-types';
 import { activateMainnetFork } from './utils/mainnet-fork';
 
 describe('Update Implementation', () => {
@@ -112,15 +120,14 @@ describe('Update Implementation', () => {
     const triCryptoWhaleSigner = await hre.ethers.getSigner(triCryptoWhale);
 
     const rageClearingHouse = await ethers.getContractAt('ClearingHouse', await vaultWithLogicAbi.rageClearingHouse());
-    const gauge = ICurveGauge__factory.connect(addresses.NEW_GAUGE, hre.ethers.provider)
-    const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider)
+    const gauge = ICurveGauge__factory.connect(addresses.NEW_GAUGE, hre.ethers.provider);
+    const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider);
 
-    console.log("TOTAL SUPPLY BEFORE:", formatEther(await vaultWithLogicAbi.totalSupply()))
-    console.log("TOTAL ASSETS BEFORE:", formatEther(await vaultWithLogicAbi.totalAssets()))
-    console.log("OUTSTANDING PNL BEFORE:", formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6))
-    console.log("TRICRYPTO BAL IN GAUGE BEFORE:", formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)))
-    console.log("USDC BAL IN 80-20 BEFORE:", formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6))
-
+    console.log('TOTAL SUPPLY BEFORE:', formatEther(await vaultWithLogicAbi.totalSupply()));
+    console.log('TOTAL ASSETS BEFORE:', formatEther(await vaultWithLogicAbi.totalAssets()));
+    console.log('OUTSTANDING PNL BEFORE:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
+    console.log('TRICRYPTO BAL IN GAUGE BEFORE:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
+    console.log('USDC BAL IN 80-20 BEFORE:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
 
     // ADDED UPDATE BASE PARAMS AND REBALANCE
     console.log('Update base params');
@@ -216,11 +223,11 @@ describe('Update Implementation', () => {
     console.log('Paused clearing house');
     await rageClearingHouse.connect(timelockSigner).pause(1);
 
-    console.log("TOTAL SUPPLY AFTER:", formatEther(await vaultWithLogicAbi.totalSupply()))
-    console.log("TOTAL ASSETS AFTER:", formatEther(await vaultWithLogicAbi.totalAssets()))
-    console.log("OUTSTANDING PNL AFTER:", formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6))
-    console.log("TRICRYPTO BAL IN GAUGE AFTER:", formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)))
-    console.log("USDC BAL IN 80-20 AFTER:", formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6))
+    console.log('TOTAL SUPPLY AFTER:', formatEther(await vaultWithLogicAbi.totalSupply()));
+    console.log('TOTAL ASSETS AFTER:', formatEther(await vaultWithLogicAbi.totalAssets()));
+    console.log('OUTSTANDING PNL AFTER:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
+    console.log('TRICRYPTO BAL IN GAUGE AFTER:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
+    console.log('USDC BAL IN 80-20 AFTER:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
 
     // old user is able to withdraw (& withdraw max)
     console.log('old user withdraw');
@@ -239,6 +246,8 @@ describe('Update Implementation', () => {
     await lpToken.connect(triCryptoWhaleSigner).transfer(newUser.address, parseEther('1'));
     await lpToken.connect(newUser).approve(vaultWithLogicAbi.address, ethers.constants.MaxUint256);
     await vaultWithLogicAbi.connect(newUser).deposit(parseEther('1'), newUser.address);
-    expect(await vaultWithLogicAbi.balanceOf(newUser.address)).to.eq(await vaultWithLogicAbi.convertToShares(parseEther('1')));
+    expect(await vaultWithLogicAbi.balanceOf(newUser.address)).to.eq(
+      await vaultWithLogicAbi.convertToShares(parseEther('1')),
+    );
   });
 });
