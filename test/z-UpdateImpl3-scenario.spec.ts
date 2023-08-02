@@ -30,10 +30,20 @@ describe('Update Implementation', () => {
     const proxyAdmin = '0xA335Dd9CeFBa34449c0A89FB4d247f395C5e3782';
     const triCryptoWhale = '0x555766f3da968ecBefa690Ffd49A2Ac02f47aa5f';
 
+    const triCryptoWhaleSigner = await hre.ethers.getSigner(triCryptoWhale);
+
     const vaultWithLogicAbi = await hre.ethers.getContractAt(
       'CurveYieldStrategy',
       '0x1d42783E7eeacae12EbC315D1D2D0E3C6230a068',
     );
+
+    const lpToken = (await hre.ethers.getContractAt(
+      '@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20',
+      addresses.TRICRYPTO_LP_TOKEN,
+    )) as ERC20;
+
+    const signers = await hre.ethers.getSigners();
+    const newUser = signers[0];
 
     await hre.network.provider.request({
       method: 'hardhat_impersonateAccount',
@@ -123,8 +133,7 @@ describe('Update Implementation', () => {
     console.log('Rebalanced');
 
     await proxyAdminContract.upgrade(clearingHouse.address, clearingHouseImpl);
-    await proxyAdminContract.upgrade(tricrypto.address, tricryptoImpl);
-    console.log('Upgraded');
+    console.log('Upgraded core');
 
     await alternateCH.withdrawProtocolFee(1);
     console.log('Fee withdrawn');
@@ -140,6 +149,20 @@ describe('Update Implementation', () => {
     console.log('OUTSTANDING PNL AFTER:', formatUnits(await clearingHouse.getAccountNetProfit(0), 6));
     console.log('TRICRYPTO BAL IN GAUGE AFTER:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
     console.log('USDC BAL IN 80-20 AFTER:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
+
+    await expect(
+      vaultWithLogicAbi
+        .connect(oldUserSigner)
+        .redeem(await vaultWithLogicAbi.balanceOf(oldUserSigner.address), oldUserSigner.address, oldUserSigner.address),
+    ).to.be.reverted;
+
+    console.log('new user deposit failure');
+    await lpToken.connect(triCryptoWhaleSigner).transfer(newUser.address, parseEther('1'));
+    await lpToken.connect(newUser).approve(vaultWithLogicAbi.address, ethers.constants.MaxUint256);
+    await expect(vaultWithLogicAbi.connect(newUser).deposit(parseEther('1'), newUser.address)).to.be.reverted;
+
+    await proxyAdminContract.upgrade(tricrypto.address, tricryptoImpl);
+    console.log('Upgraded tricrypto');
 
     // old user is able to withdraw (& withdraw max)
     console.log('old user withdraw');
