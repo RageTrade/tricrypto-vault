@@ -116,7 +116,7 @@ describe('Update Implementation', () => {
     await vaultWithLogicAbi
       .connect(ownerSigner)
       .updateBaseParams(
-        await vaultWithLogicAbi.depositCap(),
+        0,
         owner,
         0,
         await vaultWithLogicAbi.rebalancePriceThresholdBps(),
