@@ -134,12 +134,7 @@ describe('Update Implementation', () => {
 
     await vaultWithLogicAbi
       .connect(timelockSigner)
-      .updateBaseParams(
-        0,
-        await vaultWithLogicAbi.keeper(),
-        0,
-        await vaultWithLogicAbi.rebalancePriceThresholdBps(),
-      );
+      .updateBaseParams(0, await vaultWithLogicAbi.keeper(), 0, await vaultWithLogicAbi.rebalancePriceThresholdBps());
 
     console.log('Rebalancing');
     await vaultWithLogicAbi.connect(keeperSigner).rebalance();
@@ -238,13 +233,13 @@ describe('Update Implementation', () => {
 
     // old user is able to deposit again
     console.log('old user deposit failure');
-    await expect(vaultWithLogicAbi.connect(oldUserSigner).deposit(parseEther('1'), oldUserSigner.address)).to.be.reverted;
+    await expect(vaultWithLogicAbi.connect(oldUserSigner).deposit(parseEther('1'), oldUserSigner.address)).to.be
+      .reverted;
 
     // new user is able to deposit
     console.log('new user deposit failure');
     await lpToken.connect(triCryptoWhaleSigner).transfer(newUser.address, parseEther('1'));
     await lpToken.connect(newUser).approve(vaultWithLogicAbi.address, ethers.constants.MaxUint256);
     await expect(vaultWithLogicAbi.connect(newUser).deposit(parseEther('1'), newUser.address)).to.be.reverted;
-    
   });
 });

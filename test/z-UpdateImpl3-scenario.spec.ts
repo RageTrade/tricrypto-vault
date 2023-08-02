@@ -18,7 +18,7 @@ describe('Update Implementation', () => {
   before(async () => {
     await activateMainnetFork({
       network: 'arbitrum-mainnet',
-      blockNumber: 117286600,
+      blockNumber: 117316170,
     });
   });
 
@@ -74,7 +74,7 @@ describe('Update Implementation', () => {
     const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider);
 
     const clearingHouseImpl = '0xb10C6B050da0Ca0249fa38750281143efDe2feDA';
-    const tricryptoImpl = '0x4725191F770A18c69FF952FF0AECd014cDfE4c60';
+    const tricryptoImpl = '0x4fB60125AfF0B42A21a48e6c30511773D1E4dC21';
 
     const clearingHouse = ClearingHouse__factory.connect(
       '0x4521916972A76D5BFA65Fb539Cf7a0C2592050Ac',
@@ -115,12 +115,7 @@ describe('Update Implementation', () => {
 
     await vaultWithLogicAbi
       .connect(ownerSigner)
-      .updateBaseParams(
-        0,
-        owner,
-        0,
-        await vaultWithLogicAbi.rebalancePriceThresholdBps(),
-      );
+      .updateBaseParams(0, owner, 0, await vaultWithLogicAbi.rebalancePriceThresholdBps());
     console.log('Updated base params');
 
     await vaultWithLogicAbi.connect(ownerSigner).rebalance();
