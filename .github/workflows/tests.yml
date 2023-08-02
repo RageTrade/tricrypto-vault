@@ -18,7 +18,6 @@ jobs:
           node-version: 16
       - run: yarn install --frozen-lockfile
       - run: yarn compile
-      - run: yarn patch-package
       - run: yarn test
         env:
           ALCHEMY_KEY: ${{ secrets.ALCHEMY_KEY }}
