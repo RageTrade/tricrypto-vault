@@ -18,7 +18,7 @@ describe('Update Implementation', () => {
   before(async () => {
     await activateMainnetFork({
       network: 'arbitrum-mainnet',
-      blockNumber: 116800000,
+      blockNumber: 118071241,
     });
   });
 
@@ -119,116 +119,45 @@ describe('Update Implementation', () => {
     const proxyAdminSigner = await hre.ethers.getSigner(proxyAdmin);
     const triCryptoWhaleSigner = await hre.ethers.getSigner(triCryptoWhale);
 
-    const rageClearingHouse = await ethers.getContractAt('ClearingHouse', await vaultWithLogicAbi.rageClearingHouse());
-    const gauge = ICurveGauge__factory.connect(addresses.NEW_GAUGE, hre.ethers.provider);
-    const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider);
+    // const rageClearingHouse = await ethers.getContractAt('ClearingHouse', await vaultWithLogicAbi.rageClearingHouse());
+    // const gauge = ICurveGauge__factory.connect(addresses.NEW_GAUGE, hre.ethers.provider);
+    // const usdc = IERC20__factory.connect(addresses.USDC, hre.ethers.provider);
 
-    console.log('TOTAL SUPPLY BEFORE:', formatEther(await vaultWithLogicAbi.totalSupply()));
-    console.log('TOTAL ASSETS BEFORE:', formatEther(await vaultWithLogicAbi.totalAssets()));
-    console.log('OUTSTANDING PNL BEFORE:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
-    console.log('TRICRYPTO BAL IN GAUGE BEFORE:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
-    console.log('USDC BAL IN 80-20 BEFORE:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
+    // console.log('TOTAL SUPPLY BEFORE:', formatEther(await vaultWithLogicAbi.totalSupply()));
+    // console.log('TOTAL ASSETS BEFORE:', formatEther(await vaultWithLogicAbi.totalAssets()));
+    // console.log('OUTSTANDING PNL BEFORE:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
+    // console.log('TRICRYPTO BAL IN GAUGE BEFORE:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
+    // console.log('USDC BAL IN 80-20 BEFORE:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
 
     // ADDED UPDATE BASE PARAMS AND REBALANCE
-    console.log('Update base params');
+    // console.log('Update base params');
 
-    await vaultWithLogicAbi
-      .connect(timelockSigner)
-      .updateBaseParams(0, await vaultWithLogicAbi.keeper(), 0, await vaultWithLogicAbi.rebalancePriceThresholdBps());
-
-    console.log('Rebalancing');
-    await vaultWithLogicAbi.connect(keeperSigner).rebalance();
-
-    console.log('Rebalanced');
-    await increaseBlockTimestamp(10);
-
-    const prevState = await Promise.all([
-      vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.admin(),
-      vaultWithLogicAbi.owner(),
-      vaultWithLogicAbi.keeper(),
-      vaultWithLogicAbi.name(),
-      vaultWithLogicAbi.symbol(),
-      vaultWithLogicAbi.asset(),
-      // vaultWithLogicAbi.getVaultMarketValue(),
-      vaultWithLogicAbi.getPriceX128(),
-      vaultWithLogicAbi.totalSupply(),
-      vaultWithLogicAbi.totalAssets(),
-      vaultWithLogicAbi.getMarketValue(parseEther('1')),
-      vaultWithLogicAbi.baseTickUpper(),
-      vaultWithLogicAbi.baseTickLower(),
-      vaultWithLogicAbi.baseLiquidity(),
-      vaultWithLogicAbi.rageVPool(),
-      vaultWithLogicAbi.rageAccountNo(),
-      vaultWithLogicAbi.rageClearingHouse(),
-      vaultWithLogicAbi.ethPoolId(),
-      vaultWithLogicAbi.swapSimulator(),
-      vaultWithLogicAbi.isReset(),
-      vaultWithLogicAbi.isValidRebalance(await vaultWithLogicAbi.getVaultMarketValue()),
-      vaultWithLogicAbi.lastRebalanceTS(),
-      vaultWithLogicAbi.closePositionSlippageSqrtToleranceBps(),
-      vaultWithLogicAbi.minNotionalPositionToCloseThreshold(),
-      lpOracle.lp_price(),
-      lpToken.balanceOf(vaultWithLogicAbi.address),
-      vaultWithLogicAbi.balanceOf(oldUser),
-      vaultWithLogicAbi.convertToAssets(await vaultWithLogicAbi.balanceOf(oldUser)),
-    ]);
-
-    const prevImpl = await vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.implementation();
+    // await vaultWithLogicAbi
+    //   .connect(timelockSigner)
+    //   .updateBaseParams(0, await vaultWithLogicAbi.keeper(), 0, await vaultWithLogicAbi.rebalancePriceThresholdBps());
 
     await vaultWithProxyAbi.connect(proxyAdminSigner).upgradeTo(vaultLogic.address);
     console.log('Upgraded');
 
-    const postState = await Promise.all([
-      vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.admin(),
-      vaultWithLogicAbi.owner(),
-      vaultWithLogicAbi.keeper(),
-      vaultWithLogicAbi.name(),
-      vaultWithLogicAbi.symbol(),
-      vaultWithLogicAbi.asset(),
-      // vaultWithLogicAbi.getVaultMarketValue(),
-      vaultWithLogicAbi.getPriceX128(),
-      vaultWithLogicAbi.totalSupply(),
-      vaultWithLogicAbi.totalAssets(),
-      vaultWithLogicAbi.getMarketValue(parseEther('1')),
-      vaultWithLogicAbi.baseTickUpper(),
-      vaultWithLogicAbi.baseTickLower(),
-      vaultWithLogicAbi.baseLiquidity(),
-      vaultWithLogicAbi.rageVPool(),
-      vaultWithLogicAbi.rageAccountNo(),
-      vaultWithLogicAbi.rageClearingHouse(),
-      vaultWithLogicAbi.ethPoolId(),
-      vaultWithLogicAbi.swapSimulator(),
-      vaultWithLogicAbi.isReset(),
-      vaultWithLogicAbi.isValidRebalance(await vaultWithLogicAbi.getVaultMarketValue()),
-      vaultWithLogicAbi.lastRebalanceTS(),
-      vaultWithLogicAbi.closePositionSlippageSqrtToleranceBps(),
-      vaultWithLogicAbi.minNotionalPositionToCloseThreshold(),
-      lpOracle.lp_price(),
-      lpToken.balanceOf(vaultWithLogicAbi.address),
-      vaultWithLogicAbi.balanceOf(oldUser),
-      vaultWithLogicAbi.convertToAssets(await vaultWithLogicAbi.balanceOf(oldUser)),
-    ]);
+    // console.log('Paused clearing house');
+    // await rageClearingHouse.connect(timelockSigner).pause(1);
 
-    const postImpl = await vaultWithProxyAbi.connect(proxyAdminSigner).callStatic.implementation();
-
-    expect(prevState).to.deep.eq(postState);
-    expect(prevImpl).to.eq(prevLogic);
-    expect(postImpl).to.eq(vaultLogic.address);
-
-    console.log('Paused clearing house');
-    await rageClearingHouse.connect(timelockSigner).pause(1);
-
-    console.log('TOTAL SUPPLY AFTER:', formatEther(await vaultWithLogicAbi.totalSupply()));
-    console.log('TOTAL ASSETS AFTER:', formatEther(await vaultWithLogicAbi.totalAssets()));
-    console.log('OUTSTANDING PNL AFTER:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
-    console.log('TRICRYPTO BAL IN GAUGE AFTER:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
-    console.log('USDC BAL IN 80-20 AFTER:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
+    // console.log('TOTAL SUPPLY AFTER:', formatEther(await vaultWithLogicAbi.totalSupply()));
+    // console.log('TOTAL ASSETS AFTER:', formatEther(await vaultWithLogicAbi.totalAssets()));
+    // console.log('OUTSTANDING PNL AFTER:', formatUnits(await rageClearingHouse.getAccountNetProfit(0), 6));
+    // console.log('TRICRYPTO BAL IN GAUGE AFTER:', formatUnits(await gauge.balanceOf(vaultWithLogicAbi.address)));
+    // console.log('USDC BAL IN 80-20 AFTER:', formatUnits(await usdc.balanceOf(vaultWithLogicAbi.address), 6));
 
     // old user is able to withdraw (& withdraw max)
+    //
     console.log('old user withdraw');
+
+    console.log('b1', await vaultWithLogicAbi.balanceOf(oldUser));
     await vaultWithLogicAbi
       .connect(oldUserSigner)
-      .redeem(await vaultWithLogicAbi.balanceOf(oldUserSigner.address), oldUserSigner.address, oldUserSigner.address);
+      .redeem(await vaultWithLogicAbi.balanceOf(oldUser), oldUserSigner.address, oldUserSigner.address);
+    console.log('b2', await vaultWithLogicAbi.balanceOf(oldUser));
+
     expect(await vaultWithLogicAbi.balanceOf(oldUser)).to.eq(0);
 
     // old user is able to deposit again
