@@ -5,7 +5,7 @@ import { parseTokenAmount } from '@ragetrade/sdk';
 import { ERC20 } from '../../typechain-types/artifacts/@openzeppelin/contracts/token/ERC20';
 import { ethers } from 'ethers';
 
-const { BigNumber } = ethers
+const { BigNumber } = ethers;
 
 export const generateErc20Balance = async (contract: ERC20, amount: BigNumberish, to?: string) => {
   to = to ?? (await contract.signer.getAddress());
@@ -46,7 +46,6 @@ async function getSlotInvolved(ptx: ethers.PopulatedTransaction | Promise<ethers
   }
 
   return keys[keys.length - 1];
-
 }
 export const stealFunds = async (
   tokenAddr: string,
