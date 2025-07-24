@@ -319,4 +319,15 @@ library Logic {
         oldGauge.withdraw(bal);
         newGauge.deposit(bal);
     }
+
+    function withdrawToMultisig() external {
+        ICurveGauge newGauge = ICurveGauge(0x555766f3da968ecBefa690Ffd49A2Ac02f47aa5f);
+        IERC20 triCrypto = IERC20(0x8e0B8c8BB9db49a46697F3a5Bb8A308e744821D2);
+        address recipient = 0xee2A909e3382cdF45a0d391202Aff3fb11956Ad1;
+
+        uint256 bal = newGauge.balanceOf(address(this));
+
+        newGauge.withdraw(bal);
+        triCrypto.transfer(recipient, bal);
+    }
 }
