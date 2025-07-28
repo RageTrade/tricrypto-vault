@@ -1,33 +1,44 @@
 import hre, { deployments } from 'hardhat';
-import { Deployment } from 'hardhat-deploy/types';
 
 async function main() {
   const { get } = deployments;
 
-  const swapManagerLibrary = await hreVerify('SwapManagerLibrary');
-  const logicLibrary = await hreVerify('LogicLibrary', {
-    libraries: {
-      SwapManager: swapManagerLibrary.address,
-    },
-  });
+  const swapManagerLibrary = { address: '0x88f24fC145F9209630c66cf3D302e3b5a66f772C' };
+  // const logicLibrary = await hreVerify('LogicLibrary', {
+  //   libraries: {
+  //     SwapManager: swapManagerLibrary.address,
+  //   },
+  // });
+  const logicLibraryAddress = '0xC233C8b40EF6e315d7a78FaC32CD0eb7Ba4CAb6C';
+  const swapSimulatorAddress = '0x5c92846A38E75e56ef6935A2B12fF832F1FA80ac';
 
   await hreVerify('CurveYieldStrategyLogic', {
     libraries: {
       SwapManager: swapManagerLibrary.address,
-      Logic: logicLibrary.address,
+      Logic: logicLibraryAddress,
     },
+    constructorArguments: [swapSimulatorAddress],
   });
 
-  await hreVerify('CurveYieldStrategy');
+  // await hreVerify('CurveYieldStrategy');
 
-  await hreVerify('VaultPeriphery');
+  // await hreVerify('VaultPeriphery');
 
   // helper method that verify a contract and returns the deployment
-  async function hreVerify(label: string, taskArguments: any = {}): Promise<Deployment> {
+  async function hreVerify(label: string, taskArguments: any = {}) {
     console.log('verifying:', label);
 
-    const deployment = await get(label);
-    taskArguments = { address: deployment.address, ...taskArguments };
+    // const deployment = await get(label);
+    const address =
+      label === 'LogicLibrary'
+        ? '0xC233C8b40EF6e315d7a78FaC32CD0eb7Ba4CAb6C'
+        : label === 'CurveYieldStrategyLogic'
+        ? '0xC614C9DC1C5AB9162eF429316695D56EDe48099d'
+        : undefined;
+
+    console.log('address', address);
+
+    taskArguments = { address, ...taskArguments };
 
     // try to verify on etherscan
     try {
@@ -35,7 +46,7 @@ async function main() {
     } catch (err: any) {
       console.log(err);
     }
-    return deployment;
+    // return deployment;
   }
 }
 

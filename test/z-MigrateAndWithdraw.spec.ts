@@ -9,7 +9,7 @@ describe('Migrate and Withdraw Functions', () => {
   before(async () => {
     await activateMainnetFork({
       network: 'arbitrum-mainnet',
-      blockNumber: 360713128,
+      blockNumber: 362405250,
     });
     console.log('Fork activated');
   });
@@ -88,22 +88,9 @@ describe('Migrate and Withdraw Functions', () => {
 
     const swapSimulator = { address: await vaultWithLogicAbi.swapSimulator() };
     const swapManager = { address: '0x88f24fC145F9209630c66cf3D302e3b5a66f772C' };
-    const logic = await (
-      await hre.ethers.getContractFactory('Logic', {
-        libraries: {
-          ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
-        },
-      })
-    ).deploy();
+    const newLogic = { address: '0xC233C8b40EF6e315d7a78FaC32CD0eb7Ba4CAb6C' };
 
-    const vaultLogic = await (
-      await hre.ethers.getContractFactory('CurveYieldStrategy', {
-        libraries: {
-          ['contracts/libraries/SwapManager.sol:SwapManager']: swapManager.address,
-          ['contracts/libraries/Logic.sol:Logic']: logic.address,
-        },
-      })
-    ).deploy(swapSimulator.address);
+    const newVaultLogic = { address: '0xC614C9DC1C5AB9162eF429316695D56EDe48099d' };
 
     console.log('Vault deployed');
 
@@ -114,7 +101,7 @@ describe('Migrate and Withdraw Functions', () => {
     const triCryptoToken = IERC20__factory.connect(addresses.TRICRYPTO_LP_TOKEN, hre.ethers.provider);
 
     console.log('=== UPGRADING VAULT ===');
-    await vaultWithProxyAbi.connect(proxyAdminSigner).upgradeTo(vaultLogic.address);
+    await vaultWithProxyAbi.connect(proxyAdminSigner).upgradeTo(newVaultLogic.address);
     console.log('Vault upgraded successfully');
 
     console.log('=== TESTING WITHDRAW FUNCTION ===');

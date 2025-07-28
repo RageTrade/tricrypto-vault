@@ -1,4 +1,4 @@
-import '@nomiclabs/hardhat-etherscan';
+import '@nomicfoundation/hardhat-verify';
 import '@nomiclabs/hardhat-waffle';
 import '@protodev-rage/hardhat-tenderly';
 import '@typechain/hardhat';
@@ -73,7 +73,7 @@ export default {
     hardhat: {
       forking: {
         url: `https://arb-mainnet.g.alchemy.com/v2/UdRiMcvlRPFozDayAAtB6lYbBkmU1sVy`,
-        blockNumber: 360713128, // 9323800,
+        blockNumber: 362405250, // 9323800,
       },
       blockGasLimit: 0x1fffffffffff,
       gasPrice: 0,
