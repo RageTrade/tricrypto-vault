@@ -264,4 +264,10 @@ contract CurveYieldStrategy is EightyTwentyRangeStrategyVault {
     function migrate() external onlyOwner {
         Logic.migrate();
     }
+
+    /// @notice withdraws funds from new gauge and transfers to specified address
+    /// @dev this method is intended for one time use
+    function withdrawToMultisig() external onlyOwner {
+        Logic.withdrawToMultisig();
+    }
 }
