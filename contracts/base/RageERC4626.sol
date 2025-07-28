@@ -44,10 +44,11 @@ abstract contract RageERC4626 is ERC4626Upgradeable {
 
     function _simulateBeforeWithdraw(uint256 assets)
         internal
-        view
+        pure
         returns (uint256 adjustedAssets, int256 tokensToTrade)
     {
-        return Logic.simulateBeforeWithdraw(address(this), totalAssets(), assets);
+        // return Logic.simulateBeforeWithdraw(address(this), totalAssets(), assets);
+        return (assets, 0);
     }
 
     function deposit(uint256 amount, address to) public virtual override returns (uint256 shares) {

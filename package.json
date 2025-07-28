@@ -59,7 +59,7 @@
     "ethereum-waffle": "^3.3.0",
     "ethers": "5.6.8",
     "fs-extra": "^10.1.0",
-    "hardhat": "^2.9.3",
+    "hardhat": "^2.12.1-unknown-txs.0",
     "hardhat-contract-sizer": "^2.1.1",
     "hardhat-deploy": "^0.10.5",
     "hardhat-gas-reporter": "^1.0.4",

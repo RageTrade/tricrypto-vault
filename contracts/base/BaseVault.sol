@@ -162,8 +162,8 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
 
     /// @notice Returns account market value of vault in USDC (settlement token)
     function getVaultMarketValue() public view returns (int256 vaultMarketValue) {
-        vaultMarketValue = rageClearingHouse.getAccountNetProfit(rageAccountNo);
-        vaultMarketValue += (getMarketValue(totalAssets())).toInt256();
+        // vaultMarketValue = rageClearingHouse.getAccountNetProfit(rageAccountNo);
+        vaultMarketValue = (getMarketValue(totalAssets())).toInt256();
     }
 
     /// @notice grants allowances for base vault
@@ -267,8 +267,9 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
     /// @notice converts all non-asset balances into asset
     /// @dev to be called before functions which allocate and deallocate shares (deposit, withdraw, mint and redeem)
     function _beforeShareAllocation() internal virtual override {
+        _harvestFees();
         emit PriceInfo(getPriceX128());
-        _rebalanceProfitAndCollateral();
+        // _rebalanceProfitAndCollateral();
     }
 
     /// @notice assets are staked first into gauge before updating range liquidity position
@@ -278,7 +279,7 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
     ) internal virtual override {
         if (totalAssets() > depositCap) revert BV_DepositCap(depositCap, totalAssets());
         _afterDepositYield(amount);
-        _afterDepositRanges(totalAssets(), amount);
+        // _afterDepositRanges(totalAssets(), amount);
     }
 
     /// @notice handling accounting on rage first before withdrawing assets (unstaking from gauge)
@@ -286,14 +287,14 @@ abstract contract BaseVault is IBaseVault, RageERC4626, IBaseYieldStrategy, Owna
         uint256 amount,
         uint256 /** shares **/
     ) internal virtual override {
-        _beforeWithdrawRanges(totalAssets(), amount);
+        // _beforeWithdrawRanges(totalAssets(), amount);
         _beforeWithdrawYield(amount);
     }
 
     /// @notice reduce withdraw/redeem amount if position is reduced on rage trade to limit slippage
     /// @dev to be called before functions which allows to withdraw collateral (withdraw, redeem)
     function beforeWithdrawClosePosition(int256 tokensToTrade) internal virtual override {
-        _beforeWithdrawClosePositionRanges(tokensToTrade);
+        // _beforeWithdrawClosePositionRanges(tokensToTrade);
     }
 
     function _blockTimestamp() internal view virtual returns (uint256) {
